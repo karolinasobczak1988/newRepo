@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var message1 = "Hello";
 message1 = "bye";
 console.log(message1);
@@ -11,5 +13,5 @@ function add(a, b) {
     return a + b;
 }
 add(3, 4);
-var user = { name: "Bob", age: 34 };
+var user = { name: "Bob", age: 34, location: "delhi" };
 user.location = "hyderabad";

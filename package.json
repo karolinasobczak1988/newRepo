@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "regression": "npx playwright test BankTest.spec.ts",
-    "webTests": "npx playwright test --grep @Web",
+    "webTests": "npx playwright test hello-world.spec.ts",
     "APITests": "npx playwright test --grep @API",
     "SafariNewConfig": "npx playwright test --config playwright.config1.js --project=safari"
   },

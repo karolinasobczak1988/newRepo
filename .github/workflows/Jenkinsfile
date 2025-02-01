@@ -1,34 +1,25 @@
 pipeline {
     agent any
-
+    environment {
+        GIT_CREDENTIALS = credentials('ssh-ed25519')
+    }
     stages {
-        stage('Checkout Code') {
+        stage('Checkout') {
             steps {
-                git 'git@github.com:karolinasobczak1988/newRepo.git'  // Replace with your actual repo URL
+                git(
+                    url: 'git@github.com:karolinasobczak1988/newRepo.git',
+                    credentialsId: 'ssh-ed25519'
+                )
             }
         }
-
         stage('Install Dependencies') {
             steps {
                 sh 'npm install'
             }
         }
-
-        stage('Build') {
+        stage('Run Playwright Tests') {
             steps {
-                sh 'npm run build'
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                sh 'npm test'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                sh 'nohup node dist/index.js &'
+                sh 'npx playwright test'
             }
         }
     }
