@@ -3,26 +3,31 @@ name: Playwright Tests
 on:
   push:
     branches:
-      - main
+      - main  # This triggers the workflow whenever there is a push to the 'main' branch
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    runs-on: ubuntu-latest  # This specifies that the tests will run on the latest Ubuntu runner
 
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v2  # This checks out the code so the workflow can access it
+
+      # Step 2: Install dependencies (e.g., Playwright and other dependencies)
       - name: Install dependencies
         run: |
-          npm install
+          npm install  # This installs all dependencies listed in your package.json file
 
+      # Step 3: Run Playwright tests
       - name: Run Playwright Tests
         run: |
-          npx playwright install
-          npx playwright test hello-world.spec.ts
+          npx playwright install  # Installs the necessary browser binaries for Playwright
+          npx playwright test hello-world.spec.ts  # Runs the specific Playwright test
 
+      # Step 4: Upload test results as an artifact
       - name: Upload test results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4  # Uploads the test results to GitHub for later inspection
         with:
-          name: test-results
-          path: test-results/
+          name: test-results  # The name of the artifact
+          path: test-results/  # The path to the test results folder
