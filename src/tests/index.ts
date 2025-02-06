@@ -3,14 +3,14 @@ import express from 'express';
 const app = express();
 const port = 3000;
 
-app.get('/', (req, res) => {
+app.get('/', (_, res) => {
   res.send(`
     <html>
       <head>
         <style>
           body {
-            background-color: lightblue; /* Change background color */
-            color: darkblue;             /* Change text color */
+            background-color: lightblue;
+            color: darkblue;
             font-family: Arial, sans-serif;
             text-align: center;
             margin-top: 20%;
@@ -24,6 +24,7 @@ app.get('/', (req, res) => {
     </html>
   `);
 });
+
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
