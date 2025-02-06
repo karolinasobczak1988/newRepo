@@ -1,32 +1,36 @@
 pipeline { 
     agent any
     environment {
-        GIT_CREDENTIALS = credentials('ssh-ed25519')
+        GIT_CREDENTIALS = credentials('ssh-ed25519')  // Using SSH credentials for Git
     }
     stages {
         stage('Checkout') {
             steps {
                 git(
                     url: 'git@github.com:karolinasobczak1988/newRepo.git',
-                    credentialsId: 'ssh-ed25519'
+                    credentialsId: 'ssh-ed25519'  // SSH credentials for GitHub
                 )
             }
         }
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                sh 'npm install'  // Install npm dependencies
             }
         }
-      stage('Run Playwright Tests') {
-    steps {
-        script {
-            // List files in the workspace to verify test file exists
-          //  sh 'dir /s /b'
+        stage('Run Playwright Tests') {
+            steps {
+                script {
+                    // List files in the workspace to verify test file exists (optional, for debugging)
+                    // sh 'dir /s /b'
 
-            // Run the Playwright test with the specified test file
-            sh 'npx playwright test'
+                    // Run Playwright tests
+                    sh 'npx playwright install'  // Ensure Playwright is installed
+                    sh 'npx playwright test'  // Run all Playwright tests (can specify individual files here)
 
-           // sh "npx playwright test src/tests/hello-world.spec.ts"
+                    // Example: Uncomment and use this if you want to run a specific test
+                    // sh "npx playwright test src/tests/hello-world.spec.ts"
+                }
+            }
         }
     }
 }

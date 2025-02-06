@@ -12,8 +12,8 @@ app.get('/', (req, res) => {
       <head>
         <style>
           body {
-            background-color: orange;
-            color: darkblue;
+            background-color: darkblue;
+            color: darkpurple;
             font-family: Arial, sans-serif;
             text-align: center;
             margin-top: 20%;
