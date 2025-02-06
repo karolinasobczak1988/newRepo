@@ -19,10 +19,11 @@ jobs:
         run: |
           npm install  # This installs all dependencies listed in your package.json file
 
-      # Step 3: Start Express server (ensure it's running before tests)
+      # Step 3: Start Express server
       - name: Start Express server
         run: |
-          npm run start &  # This command starts the Express server in the background
+          npm run start &  # Start the Express server in the background
+          npx wait-on http://localhost:3000  # Wait until the server is accessible
 
       # Step 4: Run Playwright tests
       - name: Run Playwright Tests
