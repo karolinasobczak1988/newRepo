@@ -6,7 +6,9 @@
     "regression": "npx playwright test BankTest.spec.ts",
     "webTests": "npx playwright test hello-world.spec.ts",
     "APITests": "npx playwright test --grep @API",
-    "SafariNewConfig": "npx playwright test --config playwright.config1.js --project=safari"
+    "SafariNewConfig": "npx playwright test --config playwright.config1.js --project=safari",
+    "build": "echo 'No build step required for Playwright project'",
+    "test": "playwright test"
   },
   "keywords": [],
   "author": "",
@@ -25,7 +27,8 @@
   "dependencies": {
     "axios": "^1.7.9",
     "exceljs": "^4.4.0",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "react-scripts": "^5.0.1"
   },
   "directories": {
     "test": "tests"

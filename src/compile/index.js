@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
       <head>
         <style>
           body {
-            background-color: lightblue;
+            background-color: black;
             color: darkblue;
             font-family: Arial, sans-serif;
             text-align: center;

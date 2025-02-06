@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES6",
     "module": "CommonJS",
-    "outDir": "./dist",
+    "outDir": "./src/compile",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -10,6 +10,6 @@
     "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "src/**/*.ts"  // This line includes all TypeScript files inside the src folder
+    "src/**/*.ts"
   ]
 }
