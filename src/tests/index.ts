@@ -9,7 +9,7 @@ app.get('/', (req: Request, res: Response) => {
       <head>
         <style>
           body {
-            background-color: yellow;
+            background-color: orange;
             color: darkblue;
             font-family: Arial, sans-serif;
             text-align: center;

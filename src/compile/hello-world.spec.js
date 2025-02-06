@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const test_1 = require("@playwright/test");
-(0, test_1.test)('should visit the page and check title', (_a) => __awaiter(void 0, [_a], void 0, function* ({ page }) {
+(0, test_1.test)('should visit the page and check title', ({ page }) => __awaiter(void 0, void 0, void 0, function* () {
     yield page.goto('http://localhost:3000/'); // Your Express app URL
     yield page.waitForLoadState('load'); // Wait for the page to load
     const textElement = yield page.locator('text=Hello World'); // Find the element containing "Hello World"
