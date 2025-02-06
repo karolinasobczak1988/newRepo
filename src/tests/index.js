@@ -10,6 +10,5 @@ app.get('/', function (_req, res) {
     res.send('Hello World');
 });
 app.listen(port, function () {
-    console.log("Server running at http://localhost:".concat(8080));
+    console.log("Server running at http://localhost:" + port);
 });
-exports.default = app;

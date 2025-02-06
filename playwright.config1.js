@@ -2,7 +2,7 @@
 const { devices } = require('@playwright/test');
 
 const config = {
-  testDir: './tests',
+  testDir: './src/tests',
   retries :1,
   workers: 3,
   /* Maximum time one test can run for. */

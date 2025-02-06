@@ -16,7 +16,8 @@ test.describe('Practicing locating autocomplete widgets', () => {
     expect(selectedOptions).toContain('Green');
 
   
-  });test('Check accessibility', async ({ page }) => {
+  });
+  test('Check accessibility', async ({ page }) => {
     await page.goto('https://example.com');
   
     const results = await new AxeBuilder({ page }).analyze();
@@ -26,3 +27,5 @@ test.describe('Practicing locating autocomplete widgets', () => {
   });
 
 });
+// const seriousViolations = results.violations.filter(v => v.impact === "serious");
+//expect(seriousViolations).toEqual([]);

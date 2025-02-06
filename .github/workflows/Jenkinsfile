@@ -1,4 +1,4 @@
-pipeline {
+pipeline { 
     agent any
     environment {
         GIT_CREDENTIALS = credentials('ssh-ed25519')
@@ -17,10 +17,16 @@ pipeline {
                 sh 'npm install'
             }
         }
-        stage('Run Playwright Tests') {
-            steps {
-                sh 'npx playwright test'
-            }
+      stage('Run Playwright Tests') {
+    steps {
+        script {
+            // List files in the workspace to verify test file exists
+          //  sh 'dir /s /b'
+
+            // Run the Playwright test with the specified test file
+            sh 'npx playwright test'
+
+           // sh "npx playwright test src/tests/hello-world.spec.ts"
         }
     }
 }
