@@ -8,7 +8,8 @@
     "APITests": "npx playwright test --grep @API",
     "SafariNewConfig": "npx playwright test --config playwright.config1.js --project=safari",
     "build": "echo 'No build step required for Playwright project'",
-    "test": "playwright test"
+    "test": "playwright test",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
