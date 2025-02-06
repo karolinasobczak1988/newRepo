@@ -1,44 +1,25 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 
 const app = express();
 const port = 3000;
 
-app.get('/', (req: Request, res: Response): void => {
+app.get('/', (req, res) => {
   res.send(`
     <html>
       <head>
         <style>
           body {
+            background-color: lightblue; /* Change background color */
+            color: darkblue;             /* Change text color */
             font-family: Arial, sans-serif;
             text-align: center;
-            margin-top: 50px;
-          }
-          #message {
-            color: black;
-            font-size: 24px;
-          }
-          #colorBtn {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
+            margin-top: 20%;
+            font-size: 36px;
           }
         </style>
       </head>
       <body>
-        <div id="message">Hello World</div>
-        <button id="colorBtn">Change Text Color</button>
-        <script>
-          document.getElementById('colorBtn').addEventListener('click', () => {
-            const message = document.getElementById('message');
-            const colors = ['red', 'green', 'blue', 'orange', 'purple'];
-            const currentColor = message.style.color;
-            let newColor = colors[Math.floor(Math.random() * colors.length)];
-            while (newColor === currentColor) {
-              newColor = colors[Math.floor(Math.random() * colors.length)];
-            }
-            message.style.color = newColor;
-          });
-        </script>
+        <h1>Hello World</h1>
       </body>
     </html>
   `);
