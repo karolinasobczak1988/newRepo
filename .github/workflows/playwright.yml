@@ -19,13 +19,18 @@ jobs:
         run: |
           npm install  # This installs all dependencies listed in your package.json file
 
-      # Step 3: Run Playwright tests
+      # Step 3: Start Express server (ensure it's running before tests)
+      - name: Start Express server
+        run: |
+          npm run start &  # This command starts the Express server in the background
+
+      # Step 4: Run Playwright tests
       - name: Run Playwright Tests
         run: |
           npx playwright install  # Installs the necessary browser binaries for Playwright
           npx playwright test hello-world.spec.ts  # Runs the specific Playwright test
 
-      # Step 4: Upload test results as an artifact
+      # Step 5: Upload test results as an artifact
       - name: Upload test results
         uses: actions/upload-artifact@v4  # Uploads the test results to GitHub for later inspection
         with:
