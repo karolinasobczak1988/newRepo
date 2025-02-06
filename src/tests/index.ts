@@ -3,16 +3,24 @@ import express, { Request, Response } from 'express';
 const app = express();
 const port = 3000;
 
-app.use(express.json());  // To parse incoming JSON data from GitHub Webhook
+app.use(express.json()); // This is necessary to parse JSON payloads from GitHub
 
-// Route for testing purposes (Hello World page)
+// Webhook endpoint to handle GitHub push event
+app.post('/github-webhook', (req: Request, res: Response) => {
+  console.log('Received GitHub webhook: ', req.body);  // Log the incoming payload
+
+  // Respond to GitHub to confirm receipt
+  res.status(200).send('Webhook received');
+});
+
+// Main route (can be used for testing)
 app.get('/', (req: Request, res: Response) => {
   res.send(`
     <html>
       <head>
         <style>
           body {
-            background-color: darkyellow;
+            background-color: darkred;
             color: darkpurple;
             font-family: Arial, sans-serif;
             text-align: center;
@@ -26,12 +34,6 @@ app.get('/', (req: Request, res: Response) => {
       </body>
     </html>
   `);
-});
-
-// GitHub webhook route
-app.post('/github-webhook', (req: Request, res: Response) => {
-  console.log('Webhook received:', req.body);  // Logs the payload to confirm receipt
-  res.status(200).send('Webhook received and processed');
 });
 
 app.listen(port, () => {

@@ -6,15 +6,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const app = (0, express_1.default)();
 const port = 3000;
-app.use(express_1.default.json()); // To parse incoming JSON data from GitHub Webhook
-// Route for testing purposes (Hello World page)
+app.use(express_1.default.json()); // This is necessary to parse JSON payloads from GitHub
+// Webhook endpoint to handle GitHub push event
+app.post('/github-webhook', (req, res) => {
+    console.log('Received GitHub webhook: ', req.body); // Log the incoming payload
+    // Respond to GitHub to confirm receipt
+    res.status(200).send('Webhook received');
+});
+// Main route (can be used for testing)
 app.get('/', (req, res) => {
     res.send(`
     <html>
       <head>
         <style>
           body {
-            background-color: darkyellow;
+            background-color: darkred;
             color: darkpurple;
             font-family: Arial, sans-serif;
             text-align: center;
@@ -28,11 +34,6 @@ app.get('/', (req, res) => {
       </body>
     </html>
   `);
-});
-// GitHub webhook route
-app.post('/github-webhook', (req, res) => {
-    console.log('Webhook received:', req.body); // Logs the payload to confirm receipt
-    res.status(200).send('Webhook received and processed');
 });
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
