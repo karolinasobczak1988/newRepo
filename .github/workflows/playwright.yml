@@ -19,11 +19,11 @@ jobs:
         run: |
           npm install  # This installs all dependencies listed in your package.json file
 
-      # Step 3: Start Express server (Check if index.js exists)
+      # Step 3: Start Express server (Check if index.js exists in the correct path)
       - name: Start Express server
         run: |
-          if [ -f index.js ]; then
-            node index.js &  # Start the Express server in the background
+          if [ -f src/tests/index.js ]; then
+            node src/tests/index.js &  # Start the Express server in the background
             npx wait-on http://localhost:3000  # Wait until the server is accessible
           else
             echo "index.js not found! Exiting..."
