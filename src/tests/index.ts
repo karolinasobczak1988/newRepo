@@ -1,15 +1,15 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 
 const app = express();
 const port = 3000;
 
-app.get('/', (_, res) => {
+app.get('/', (req: Request, res: Response) => {
   res.send(`
     <html>
       <head>
         <style>
           body {
-            background-color: lightblue;
+            background-color: purple;
             color: darkblue;
             font-family: Arial, sans-serif;
             text-align: center;
@@ -24,7 +24,6 @@ app.get('/', (_, res) => {
     </html>
   `);
 });
-
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
