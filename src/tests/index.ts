@@ -3,18 +3,19 @@ import express, { Request, Response } from 'express';
 const app = express();
 const port = 3000;
 
-app.use(express.json()); // This is necessary to parse JSON payloads from GitHub
+// Middleware to parse JSON payloads
+app.use(express.json());
 
 // Webhook endpoint to handle GitHub push event
 app.post('/generic-webhook-trigger/invoke', (req: Request, res: Response) => {
-  // Ensure you're using the req parameter properly
-  console.log('Received GitHub webhook:', req.body);  // Log the incoming payload
+  console.log('Received webhook at /generic-webhook-trigger/invoke');
+  console.log('Webhook payload:', req.body);  // Log the incoming payload
 
   // Respond to GitHub to confirm receipt
   res.status(200).send('Webhook received');
 });
 
-// Main route (can be used for testing)
+// Main route for testing the server
 app.get('/', (_req: Request, res: Response) => {
   res.send(`
     <html>
@@ -22,7 +23,7 @@ app.get('/', (_req: Request, res: Response) => {
         <style>
           body {
             background-color: magenta;
-            color: darkpurple;
+            color: darkviolet; /* Changed to valid color */
             font-family: Arial, sans-serif;
             text-align: center;
             margin-top: 20%;
@@ -37,6 +38,8 @@ app.get('/', (_req: Request, res: Response) => {
   `);
 });
 
+// Start the server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
+  console.log(`ngrok URL: https://5dc3-78-145-99-237.ngrok-free.app`); // Show ngrok URL
 });
