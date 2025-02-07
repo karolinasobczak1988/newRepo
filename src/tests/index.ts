@@ -6,7 +6,7 @@ const port = 3000;
 app.use(express.json()); // This is necessary to parse JSON payloads from GitHub
 
 // Webhook endpoint to handle GitHub push event
-app.post('/github-webhook', (req: Request, res: Response) => {
+app.post('/generic-webhook-trigger/invoke', (req: Request, res: Response) => {
   // Ensure you're using the req parameter properly
   console.log('Received GitHub webhook:', req.body);  // Log the incoming payload
 
