@@ -7,14 +7,15 @@ app.use(express.json()); // This is necessary to parse JSON payloads from GitHub
 
 // Webhook endpoint to handle GitHub push event
 app.post('/github-webhook', (req: Request, res: Response) => {
-  console.log('Received GitHub webhook: ', req.body);  // Log the incoming payload
+  // Ensure you're using the req parameter properly
+  console.log('Received GitHub webhook:', req.body);  // Log the incoming payload
 
   // Respond to GitHub to confirm receipt
   res.status(200).send('Webhook received');
 });
 
 // Main route (can be used for testing)
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (_req: Request, res: Response) => {
   res.send(`
     <html>
       <head>
