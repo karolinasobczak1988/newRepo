@@ -20,7 +20,7 @@ app.get('/', (req: Request, res: Response) => {
       <head>
         <style>
           body {
-            background-color: darkred;
+            background-color: magenta;
             color: darkpurple;
             font-family: Arial, sans-serif;
             text-align: center;
