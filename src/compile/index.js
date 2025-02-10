@@ -6,22 +6,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const app = (0, express_1.default)();
 const port = 3000;
-app.use(express_1.default.json()); // This is necessary to parse JSON payloads from GitHub
+// Middleware to parse JSON payloads
+app.use(express_1.default.json());
 // Webhook endpoint to handle GitHub push event
-app.post('/github-webhook', (req, res) => {
-    console.log('Received GitHub webhook: ', req.body); // Log the incoming payload
+app.post('/generic-webhook-trigger/invoke', (req, res) => {
+    console.log('Received webhook at /generic-webhook-trigger/invoke');
+    console.log('Webhook payload:', req.body); // Log the incoming payload
     // Respond to GitHub to confirm receipt
     res.status(200).send('Webhook received');
 });
-// Main route (can be used for testing)
-app.get('/', (req, res) => {
+// Main route for testing the server
+app.get('/', (_req, res) => {
     res.send(`
     <html>
       <head>
         <style>
           body {
-            background-color: darkred;
-            color: darkpurple;
+            background-color: magenta;
+            color: darkviolet; /* Changed to valid color */
             font-family: Arial, sans-serif;
             text-align: center;
             margin-top: 20%;
@@ -35,6 +37,8 @@ app.get('/', (req, res) => {
     </html>
   `);
 });
+// Start the server
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
+    console.log(`ngrok URL: https://5dc3-78-145-99-237.ngrok-free.app`); // Show ngrok URL
 });

@@ -7,7 +7,9 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "strict": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedParameters": false, // Disable unused parameters warning
+    "noUnusedLocals": false // Disable unused locals warning
   },
   "include": [
     "src/**/*.ts"

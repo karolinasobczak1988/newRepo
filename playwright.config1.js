@@ -1,51 +1,46 @@
-// @ts-check
-const { devices } = require('@playwright/test');
+import { defineConfig, devices } from '@playwright/test';
 
-const config = {
-  testDir: './src/tests',
-  retries :1,
+export default defineConfig({
+  testDir: './tests',
+  //'./src/tests',
+  retries: 1,
   workers: 3,
-  /* Maximum time one test can run for. */
-  //10-
   timeout: 30 * 1000,
   expect: {
-  
-    timeout: 5000
+    timeout: 5000,
   },
-  
-  //reporter: 'html',
-  projects : [
+
+  projects: [
     {
-      name : 'safari',
+      name: 'safari',
       use: {
-
-        browserName : 'webkit',
-        headless : true,
-        screenshot : 'off',
-        trace : 'on',//off,on 
-        ...devices['iPhone 11'],    
-      }
-
+        browserName: 'webkit',
+        headless: true,
+        screenshot: 'off',
+        trace: 'on',
+        ...devices['iPhone 11'],
+      },
     },
     {
-      name : 'chrome',
+      name: 'chrome',
       use: {
-
-        browserName : 'chromium',
-        headless : false,
-        screenshot : 'on',
+        browserName: 'chromium',
+        headless: false,
+        screenshot: 'on',
         video: 'retain-on-failure',
-        ignoreHttpsErrors:true,
-        permissions:['geolocation'],
-        
-        trace : 'on',//off,on
-       // ...devices['']
-     //   viewport : {width:720,height:720}
-         }
-
-    }
-    ]
-
-};
-
-module.exports = config;
+        ignoreHttpsErrors: true,
+        permissions: ['geolocation'],
+        trace: 'on',
+      },
+    },
+    {
+      name: 'firefox',
+      use: {
+        browserName: 'firefox',
+        headless: false, // headless: false to see the UI
+        screenshot: 'on',
+        trace: 'on',
+      },
+    },
+  ],
+});
