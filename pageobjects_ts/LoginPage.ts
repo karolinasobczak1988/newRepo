@@ -1,13 +1,4 @@
 import { Locator, Page } from '@playwright/test';
-import dotenv from 'dotenv';
-import path from 'path';
-
-// Load environment variables from testData.env
-const envPath = path.resolve(__dirname, '..', 'utils_ts', 'testData.env');
-console.log('Loading .env file from:', envPath);
-
-dotenv.config({ path: envPath });
-
 
 export class LoginPage {
   private page: Page;
@@ -23,14 +14,11 @@ export class LoginPage {
   }
 
   async navigateTo(): Promise<void> {
-    await this.page.goto('https://jamesroberts-trial.interactgo.com/'); 
-    
+    await this.page.goto(process.env.BLOG_URL!);
   }
-  
+
   async enterUsername(): Promise<void> {
     await this.usernameField.click();
-    console.log('username field found');
-    // Use the environment variable to fill the username field
     await this.usernameField.fill(process.env.USERNAMEQA!);
   }
 
