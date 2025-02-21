@@ -1,10 +1,10 @@
 trigger: 
   branches:
     include:
-      - main  # Runs the pipeline when code is pushed to 'main' branch
+      - main  # Runs when you push to the main branch
 
 pool:
-  name: Default  # Uses your self-hosted agent instead of Azure-hosted agents
+  name: Default  # Uses your self-hosted agent
 
 stages:
 - stage: Checkout
@@ -24,22 +24,43 @@ stages:
         npx playwright install  # Installs Playwright browsers
       displayName: 'Install npm packages'
 
-- stage: Start_Application
-  displayName: 'Start Application'
+- stage: Build
+  displayName: 'Prepare Application for Deployment'
   jobs:
-  - job: StartApp
+  - job: BuildApp
     steps:
     - script: |
-        start /b npm start  # Starts the app in the background
-        timeout /t 10  # Wait for 10 seconds (adjust if needed)
-      displayName: 'Start Express Server'
+        npm run build
+      displayName: 'Build App'
 
-- stage: Run_Tests
-  displayName: 'Run Playwright Tests'
-  dependsOn: Start_Application  # Ensures tests run after the app starts
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(Build.SourcesDirectory)'
+        includeRootFolder: false
+        archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
+        replaceExistingArchive: true
+      displayName: 'Archive Application Files'
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: '$(Build.ArtifactStagingDirectory)/app.zip'
+        artifactName: 'drop'
+      displayName: 'Publish Artifact'
+
+- stage: Deploy
+  displayName: 'Deploy to Azure Web App'
   jobs:
-  - job: Test
+  - job: DeployApp
     steps:
-    - script: |
-        npx playwright test tests/hello-world.spec.ts
-      displayName: 'Run Playwright Tests'
+    - task: DownloadBuildArtifacts@0
+      inputs:
+        artifactName: 'drop'
+        downloadPath: '$(Build.ArtifactStagingDirectory)'
+
+    - task: AzureWebApp@1
+      inputs:
+        azureSubscription: '<Your Azure Service Connection>'
+        appName: 'your-app-name'  # Replace with your actual Azure App Service name
+        package: '$(Build.ArtifactStagingDirectory)/drop/app.zip'
+        runtimeStack: 'NODE|18-lts'
+      displayName: 'Deploy to Azure Web App'
