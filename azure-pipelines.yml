@@ -1,10 +1,10 @@
-trigger:
+trigger: 
   branches:
     include:
       - main  # Runs the pipeline when code is pushed to 'main' branch
 
 pool:
-  vmImage: 'windows-latest'  # Use 'ubuntu-latest' if running on Linux
+  name: Default  # Uses your self-hosted agent instead of Azure-hosted agents
 
 stages:
 - stage: Checkout
@@ -24,8 +24,19 @@ stages:
         npx playwright install  # Installs Playwright browsers
       displayName: 'Install npm packages'
 
+- stage: Start_Application
+  displayName: 'Start Application'
+  jobs:
+  - job: StartApp
+    steps:
+    - script: |
+        start /b npm start  # Starts the app in the background
+        timeout /t 10  # Wait for 10 seconds (adjust if needed)
+      displayName: 'Start Express Server'
+
 - stage: Run_Tests
   displayName: 'Run Playwright Tests'
+  dependsOn: Start_Application  # Ensures tests run after the app starts
   jobs:
   - job: Test
     steps:
