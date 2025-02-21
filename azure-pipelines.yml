@@ -1,0 +1,34 @@
+trigger:
+  branches:
+    include:
+      - main  # Runs the pipeline when code is pushed to 'main' branch
+
+pool:
+  vmImage: 'windows-latest'  # Use 'ubuntu-latest' if running on Linux
+
+stages:
+- stage: Checkout
+  displayName: 'Checkout Repository'
+  jobs:
+  - job: Checkout
+    steps:
+    - checkout: self  # Clones the GitHub repository
+
+- stage: Install_Dependencies
+  displayName: 'Install Dependencies'
+  jobs:
+  - job: Install
+    steps:
+    - script: |
+        npm install
+        npx playwright install  # Installs Playwright browsers
+      displayName: 'Install npm packages'
+
+- stage: Run_Tests
+  displayName: 'Run Playwright Tests'
+  jobs:
+  - job: Test
+    steps:
+    - script: |
+        npx playwright test tests/hello-world.spec.ts
+      displayName: 'Run Playwright Tests'
