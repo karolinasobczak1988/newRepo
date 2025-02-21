@@ -3,17 +3,18 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "regression": "npx playwright test BankTest.spec.ts",
-    "webTests": "npx playwright test hello-world.spec.ts",
-    "APITests": "npx playwright test --grep @API",
-    "SafariNewConfig": "npx playwright test --config playwright.config1.js --project=safari",
-    "build": "echo 'No build step required for Playwright project'",
-    "test": "playwright test",
-    "start": "node server.js"
+    "start": "node index.js", 
+    "build": "echo 'No build step required'", 
+    "e2e": "npx playwright test login.spec.ts",
+    "test": "npm run e2e",
+    "deploy": "npm run build && npm start"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.1",
     "@cucumber/cucumber": "*",

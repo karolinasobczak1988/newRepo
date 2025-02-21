@@ -2,21 +2,27 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
-  //'./src/tests',
   retries: 1,
   workers: 3,
   timeout: 30 * 1000,
   expect: {
     timeout: 5000,
   },
+  use: {
+    video: 'on', // 'on', 'retain-on-failure', or 'off'
+    headless: false, // Runs in headed mode
+  },
+
+
 
   projects: [
     {
       name: 'safari',
       use: {
         browserName: 'webkit',
-        headless: true,
-        screenshot: 'off',
+        headless: false,
+        screenshot: 'on',
+        video: 'retain-on-failure',
         trace: 'on',
         ...devices['iPhone 11'],
       },
