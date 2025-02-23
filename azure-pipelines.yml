@@ -1,10 +1,10 @@
-trigger: 
+trigger:
   branches:
     include:
       - main  # Runs when you push to the main branch
 
 pool:
-  name: Default  # Uses your self-hosted agent
+  name: Azure Pipelines  # Uses Azure-hosted agent
 
 stages:
 - stage: Checkout
@@ -59,8 +59,9 @@ stages:
 
     - task: AzureWebApp@1
       inputs:
-        azureSubscription: '<Your Azure Service Connection>'
+        azureSubscription: 'Azure-Deploy-Connection'  # Replace with your actual Service Connection name
+        appType: 'webApp'  # Required field for deployment
         appName: 'your-app-name'  # Replace with your actual Azure App Service name
         package: '$(Build.ArtifactStagingDirectory)/drop/app.zip'
-        runtimeStack: 'NODE|18-lts'
+        runtimeStack: 'NODE:18-lts'  # Correct format for Node.js
       displayName: 'Deploy to Azure Web App'
