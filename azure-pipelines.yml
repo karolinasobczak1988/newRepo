@@ -1,35 +1,3 @@
-trigger:
-  branches:
-    include:
-      - main  # Runs when you push to the main branch
-
-pool:
-  name: Default  # Uses self-hosted agent
-
-stages:
-- stage: Checkout
-  displayName: 'Checkout Repository'
-  jobs:
-  - job: Checkout
-    steps:
-    - checkout: self  # Clones the GitHub repository
-
-- stage: Install_Dependencies
-  displayName: 'Install Dependencies'
-  jobs:
-  - job: Install
-    steps:
-    - script: |
-        echo Cleaning up disk space...
-        if exist node_modules rmdir /s /q node_modules
-        if exist package-lock.json del package-lock.json
-        npm cache clean --force
-
-        echo Installing npm dependencies...
-        npm install --legacy-peer-deps
-        npx playwright install  # Installs Playwright browsers
-      displayName: 'Install npm packages'
-
 - stage: Build
   displayName: 'Prepare Application for Deployment'
   jobs:
@@ -37,49 +5,10 @@ stages:
     steps:
     - script: |
         echo Installing TypeScript...
-        npm install -g typescript  # Install TypeScript globally
-        npm install --save-dev typescript  # Ensure TypeScript is in node_modules
+        npm install -g typescript
+        npm install --save-dev typescript
 
         echo Compiling TypeScript...
-        npx tsc --version  # Verify TypeScript version
-        npx tsc  # Compile TypeScript
+        npx tsc --version
+        npx tsc
       displayName: 'Build TypeScript App'
-
-    - task: ArchiveFiles@2
-      inputs:
-        rootFolderOrFile: '$(Build.SourcesDirectory)/src/compile'  # Deploy only compiled files
-        includeRootFolder: false
-        archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
-        replaceExistingArchive: true
-      displayName: 'Archive Compiled Files'
-
-    - task: PublishBuildArtifacts@1
-      inputs:
-        pathToPublish: '$(Build.ArtifactStagingDirectory)/app.zip'
-        artifactName: 'drop'
-      displayName: 'Publish Artifact'
-
-- stage: Deploy
-  displayName: 'Deploy to Azure Web App'
-  jobs:
-  - job: DeployApp
-    steps:
-    - script: |
-        echo Cleaning up unnecessary files before deployment...
-        if exist D:\home\LogFiles rmdir /s /q D:\home\LogFiles
-        if exist D:\home\temp rmdir /s /q D:\home\temp
-      displayName: 'Free up disk space on Azure Web App'
-
-    - task: DownloadBuildArtifacts@0
-      inputs:
-        artifactName: 'drop'
-        downloadPath: '$(Build.ArtifactStagingDirectory)'
-
-    - task: AzureWebApp@1
-      inputs:
-        azureSubscription: 'Azure-Deploy-Connection'  # Ensure this matches your Service Connection name
-        appType: 'webApp'  # Required field for deployment
-        appName: 'NewAmazingWebApp'  # Replace with your actual Azure App Service name
-        package: '$(Build.ArtifactStagingDirectory)/app.zip'
-        runtimeStack: 'NODE:18-lts'
-      displayName: 'Deploy to Azure Web App'
