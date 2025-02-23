@@ -4,7 +4,7 @@ trigger:
       - main  # Runs when you push to the main branch
 
 pool:
-  name: Default  # Uses Azure-hosted agent
+  name: Default  # Uses self-hosted agent
 
 stages:
 - stage: Checkout
@@ -20,7 +20,8 @@ stages:
   - job: Install
     steps:
     - script: |
-        npm install
+        echo "Running npm install with legacy peer dependencies..."
+        npm install --legacy-peer-deps
         npx playwright install  # Installs Playwright browsers
       displayName: 'Install npm packages'
 
@@ -59,9 +60,9 @@ stages:
 
     - task: AzureWebApp@1
       inputs:
-        azureSubscription: 'Azure-Deploy-Connection'  # Replace with your actual Service Connection name
+        azureSubscription: 'Azure-Deploy-Connection'  # Ensure this matches your Service Connection name
         appType: 'webApp'  # Required field for deployment
-        appName: 'Azure-Deploy-Connection'  # Replace with your actual Azure App Service name
+        appName: 'your-azure-app-service-name'  # Replace with your actual Azure App Service name
         package: '$(Build.ArtifactStagingDirectory)/drop/app.zip'
         runtimeStack: 'NODE:18-lts'  # Correct format for Node.js
       displayName: 'Deploy to Azure Web App'
