@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const app = (0, express_1.default)();
-const port = 3000;
+const port = process.env.PORT || 3000; // Use Azure-assigned port
 const jenkinsToken = 'JenkinsToken'; // The token that you set in Jenkins job
 // Middleware to parse JSON payloads
 app.use(express_1.default.json());
@@ -31,7 +31,7 @@ app.get('/', (_req, res) => {
         <style>
           body {
             background-color: magenta;
-            color: cyan;
+            color: black;
             font-family: Arial, sans-serif;
             text-align: center;
             margin-top: 20%;
@@ -48,5 +48,4 @@ app.get('/', (_req, res) => {
 // Start the server
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
-    console.log(`ngrok URL: https://5dc3-78-145-99-237.ngrok-free.app`); // Show ngrok URL
 });

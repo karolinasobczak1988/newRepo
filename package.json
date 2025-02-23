@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js", 
-    "build": "echo 'No build step required'", 
+    "prestart": "npm run build",
+    "build": "tsc",
+    "start": "node src/compile/indexAzure.js",
+    "postinstall": "npm run build",
     "e2e": "npx playwright test login.spec.ts",
     "test": "npm run e2e",
-    "deploy": "npm run build && npm start"
+    "deploy": "npm run build && node dist/indexAzure.js"
   },
   "keywords": [],
   "author": "",
