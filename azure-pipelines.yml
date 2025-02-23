@@ -24,7 +24,7 @@ stages:
         rm -rf node_modules package-lock.json
         npm cache clean --force
 
-        echo "Running npm install with legacy peer dependencies..."
+        echo "Installing npm dependencies..."
         npm install --legacy-peer-deps
         npx playwright install  # Installs Playwright browsers
       displayName: 'Install npm packages'
@@ -35,7 +35,11 @@ stages:
   - job: BuildApp
     steps:
     - script: |
-        npm run build  # Compiles TypeScript to JavaScript
+        echo "Installing TypeScript..."
+        npm install --save-dev typescript
+
+        echo "Compiling TypeScript..."
+        npx tsc  # Compiles TypeScript to JavaScript
       displayName: 'Build TypeScript App'
 
     - task: ArchiveFiles@2
