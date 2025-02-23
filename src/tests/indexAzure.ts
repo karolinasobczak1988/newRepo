@@ -1,27 +1,28 @@
 import express, { Request, Response } from 'express';
+import { EventEmitter } from 'events';
+import http from 'http';
+
+// Increase the EventEmitter listener limit
+EventEmitter.defaultMaxListeners = 20;
+console.log("MaxListeners limit increased to 20");
 
 const app = express();
 const port = process.env.PORT || 3000;  // Use Azure-assigned port
-const jenkinsToken = 'JenkinsToken'; // The token that you set in Jenkins job
 
 // Middleware to parse JSON payloads
 app.use(express.json());
 
 // Webhook endpoint to handle GitHub push event
 app.post('/generic-webhook-trigger/invoke', (req: Request, res: Response): void => {
-  const token = req.query.token as string; // Extract token from query
-
-  // Check if the token matches the expected Jenkins token
-  if (token !== jenkinsToken) {
-    console.log('Invalid token');
+  const token = req.query.token as string;
+  if (token !== 'JenkinsToken') {
+    console.error('Invalid token received');
     res.status(403).send('Forbidden: Invalid Token');
     return;
   }
 
   console.log('Received webhook at /generic-webhook-trigger/invoke?token=JenkinsToken');
-  console.log('Webhook payload:', req.body);  // Log the incoming payload
-
-  // Respond to GitHub to confirm receipt
+  console.log('Webhook payload:', req.body);
   res.status(200).send('Webhook received');
 });
 
@@ -48,7 +49,23 @@ app.get('/', (_req: Request, res: Response): void => {
   `);
 });
 
+// Function to start the server safely
+const server = http.createServer(app);
+
+server.on('error', (err: any) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`⚠️ Port ${port} is already in use. Trying another port...`);
+    server.listen(0, () => {
+      const newPort = (server.address() as any).port;
+      console.log(`✅ Server started on new available port: ${newPort}`);
+    });
+  } else {
+    console.error('❌ Server failed to start:', err);
+    process.exit(1);
+  }
+});
+
 // Start the server
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+server.listen(port, () => {
+  console.log(`🚀 Server running at http://localhost:${port}`);
 });
