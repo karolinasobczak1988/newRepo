@@ -49,13 +49,13 @@ stages:
           inputs:
             rootFolderOrFile: '$(Build.SourcesDirectory)/src/compile'  # Deploy only compiled files
             includeRootFolder: false
-            archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
+            archiveFile: '$(Build.ArtifactStagingDirectory)/drop/app.zip'
             replaceExistingArchive: true
           displayName: 'Archive Compiled Files'
 
         - task: PublishBuildArtifacts@1
           inputs:
-            pathToPublish: '$(Build.ArtifactStagingDirectory)/app.zip'
+            pathToPublish: '$(Build.ArtifactStagingDirectory)/drop/app.zip'
             artifactName: 'drop'
           displayName: 'Publish Artifact'
 
@@ -80,6 +80,6 @@ stages:
             azureSubscription: 'Azure-Deploy-Connection'  # Ensure this matches your Service Connection name
             appType: 'webApp'  # Required field for deployment
             appName: 'NewAmazingWebApp'  # Replace with your actual Azure App Service name
-            package: '$(Build.ArtifactStagingDirectory)/app.zip'
+            package: '$(Build.ArtifactStagingDirectory)/drop/app.zip'
             runtimeStack: 'NODE:18-lts'
           displayName: 'Deploy to Azure Web App'
