@@ -62,7 +62,7 @@ stages:
       inputs:
         azureSubscription: 'Azure-Deploy-Connection'  # Ensure this matches your Service Connection name
         appType: 'webApp'  # Required field for deployment
-        appName: 'your-azure-app-service-name'  # Replace with your actual Azure App Service name
+        appName: 'NewAmazingWebApp'  # Replace with your actual Azure App Service name
         package: '$(Build.ArtifactStagingDirectory)/drop/app.zip'
         runtimeStack: 'NODE:18-lts'  # Correct format for Node.js
       displayName: 'Deploy to Azure Web App'
