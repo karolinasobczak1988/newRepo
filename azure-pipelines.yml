@@ -20,15 +20,12 @@ stages:
   - job: Install
     steps:
     - script: |
-        echo "Setting Node.js max listeners..."
-        node -e "require('events').EventEmitter.defaultMaxListeners = 20"
-
         echo "Cleaning up disk space..."
         if exist node_modules rmdir /s /q node_modules
         if exist package-lock.json del package-lock.json
         npm cache clean --force
 
-        echo "Installing npm dependencies with peer dependency resolution..."
+        echo "Installing npm dependencies..."
         npm install --legacy-peer-deps
         npx playwright install  # Installs Playwright browsers
       displayName: 'Install npm packages'
@@ -39,8 +36,13 @@ stages:
   - job: BuildApp
     steps:
     - script: |
+        echo "Installing TypeScript..."
+        npm install -g typescript  # Install TypeScript globally
+        npm install --save-dev typescript  # Ensure TypeScript is in node_modules
+
         echo "Compiling TypeScript..."
-        npx tsc  # Compiles TypeScript to JavaScript
+        npx tsc --version  # Verify TypeScript version
+        npx tsc  # Compile TypeScript
       displayName: 'Build TypeScript App'
 
     - task: ArchiveFiles@2
