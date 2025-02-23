@@ -4,7 +4,7 @@ trigger:
       - main  # Runs when you push to the main branch
 
 pool:
-  name: Azure Pipelines  # Uses Azure-hosted agent
+  name: Default  # Uses Azure-hosted agent
 
 stages:
 - stage: Checkout
