@@ -1,10 +1,10 @@
-trigger: 
+trigger:
   branches:
     include:
       - main  # Runs when you push to the main branch
 
 pool:
-  name: Default  # Uses your self-hosted agent
+  name: Default  # Uses self-hosted agent
 
 stages:
 - stage: Checkout
@@ -20,7 +20,12 @@ stages:
   - job: Install
     steps:
     - script: |
-        npm install
+        echo "Cleaning up disk space..."
+        rm -rf node_modules package-lock.json
+        npm cache clean --force
+
+        echo "Running npm install with legacy peer dependencies..."
+        npm install --legacy-peer-deps
         npx playwright install  # Installs Playwright browsers
       displayName: 'Install npm packages'
 
@@ -30,16 +35,16 @@ stages:
   - job: BuildApp
     steps:
     - script: |
-        npm run build
-      displayName: 'Build App'
+        npm run build  # Compiles TypeScript to JavaScript
+      displayName: 'Build TypeScript App'
 
     - task: ArchiveFiles@2
       inputs:
-        rootFolderOrFile: '$(Build.SourcesDirectory)'
+        rootFolderOrFile: '$(Build.SourcesDirectory)/src/compile'  # Deploy only compiled files
         includeRootFolder: false
         archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
         replaceExistingArchive: true
-      displayName: 'Archive Application Files'
+      displayName: 'Archive Compiled Files'
 
     - task: PublishBuildArtifacts@1
       inputs:
@@ -52,6 +57,12 @@ stages:
   jobs:
   - job: DeployApp
     steps:
+    - script: |
+        echo "Cleaning up unnecessary files before deployment..."
+        rm -rf D:\home\LogFiles
+        rm -rf D:\home\temp
+      displayName: 'Free up disk space on Azure Web App'
+
     - task: DownloadBuildArtifacts@0
       inputs:
         artifactName: 'drop'
@@ -59,8 +70,9 @@ stages:
 
     - task: AzureWebApp@1
       inputs:
-        azureSubscription: '<Your Azure Service Connection>'
-        appName: 'your-app-name'  # Replace with your actual Azure App Service name
-        package: '$(Build.ArtifactStagingDirectory)/drop/app.zip'
-        runtimeStack: 'NODE|18-lts'
+        azureSubscription: 'Azure-Deploy-Connection'  # Ensure this matches your Service Connection name
+        appType: 'webApp'  # Required field for deployment
+        appName: 'NewAmazingWebApp'  # Replace with your actual Azure App Service name
+        package: '$(Build.ArtifactStagingDirectory)/app.zip'
+        runtimeStack: 'NODE:18-lts'
       displayName: 'Deploy to Azure Web App'
