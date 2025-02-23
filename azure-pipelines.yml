@@ -20,6 +20,10 @@ stages:
   - job: Install
     steps:
     - script: |
+        echo "Cleaning up disk space..."
+        rm -rf node_modules package-lock.json
+        npm cache clean --force
+
         echo "Running npm install with legacy peer dependencies..."
         npm install --legacy-peer-deps
         npx playwright install  # Installs Playwright browsers
@@ -36,11 +40,11 @@ stages:
 
     - task: ArchiveFiles@2
       inputs:
-        rootFolderOrFile: '$(Build.SourcesDirectory)'
+        rootFolderOrFile: '$(Build.SourcesDirectory)/dist'  # Ensures only built files are included
         includeRootFolder: false
         archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
         replaceExistingArchive: true
-      displayName: 'Archive Application Files'
+      displayName: 'Archive Built Files'
 
     - task: PublishBuildArtifacts@1
       inputs:
@@ -53,6 +57,12 @@ stages:
   jobs:
   - job: DeployApp
     steps:
+    - script: |
+        echo "Cleaning up unnecessary files before deployment..."
+        rm -rf D:\home\LogFiles
+        rm -rf D:\home\temp
+      displayName: 'Free up disk space on Azure Web App'
+
     - task: DownloadBuildArtifacts@0
       inputs:
         artifactName: 'drop'
