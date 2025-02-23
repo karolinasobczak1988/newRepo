@@ -35,16 +35,16 @@ stages:
   - job: BuildApp
     steps:
     - script: |
-        npm run build
-      displayName: 'Build App'
+        npm run build  # Compiles TypeScript to JavaScript
+      displayName: 'Build TypeScript App'
 
     - task: ArchiveFiles@2
       inputs:
-        rootFolderOrFile: '$(Build.SourcesDirectory)/dist'  # Ensures only built files are included
+        rootFolderOrFile: '$(Build.SourcesDirectory)/src/compile'  # Deploy only compiled files
         includeRootFolder: false
         archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
         replaceExistingArchive: true
-      displayName: 'Archive Built Files'
+      displayName: 'Archive Compiled Files'
 
     - task: PublishBuildArtifacts@1
       inputs:
@@ -73,6 +73,6 @@ stages:
         azureSubscription: 'Azure-Deploy-Connection'  # Ensure this matches your Service Connection name
         appType: 'webApp'  # Required field for deployment
         appName: 'NewAmazingWebApp'  # Replace with your actual Azure App Service name
-        package: '$(Build.ArtifactStagingDirectory)/drop/app.zip'
-        runtimeStack: 'NODE:18-lts'  # Correct format for Node.js
+        package: '$(Build.ArtifactStagingDirectory)/app.zip'
+        runtimeStack: 'NODE:18-lts'
       displayName: 'Deploy to Azure Web App'
