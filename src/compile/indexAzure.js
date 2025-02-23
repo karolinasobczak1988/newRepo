@@ -6,11 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const events_1 = require("events");
 const http_1 = __importDefault(require("http"));
-// Increase the EventEmitter listener limit
+// Increase the EventEmitter listener limit to prevent memory leaks
 events_1.EventEmitter.defaultMaxListeners = 20;
 console.log("MaxListeners limit increased to 20");
 const app = (0, express_1.default)();
-const port = process.env.PORT || 3000; // Use Azure-assigned port
+const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000; // Use Azure-assigned port or 3000
 // Middleware to parse JSON payloads
 app.use(express_1.default.json());
 // Webhook endpoint to handle GitHub push event
@@ -53,8 +53,10 @@ server.on('error', (err) => {
     if (err.code === 'EADDRINUSE') {
         console.error(`⚠️ Port ${port} is already in use. Trying another port...`);
         server.listen(0, () => {
-            const newPort = server.address().port;
-            console.log(`✅ Server started on new available port: ${newPort}`);
+            const serverAddress = server.address();
+            if (serverAddress && typeof serverAddress === 'object') {
+                console.log(`✅ Server started on new available port: ${serverAddress.port}`);
+            }
         });
     }
     else {

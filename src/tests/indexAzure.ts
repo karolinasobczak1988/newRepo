@@ -2,12 +2,12 @@ import express, { Request, Response } from 'express';
 import { EventEmitter } from 'events';
 import http from 'http';
 
-// Increase the EventEmitter listener limit
+// Increase the EventEmitter listener limit to prevent memory leaks
 EventEmitter.defaultMaxListeners = 20;
 console.log("MaxListeners limit increased to 20");
 
 const app = express();
-const port = process.env.PORT || 3000;  // Use Azure-assigned port
+const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;  // Use Azure-assigned port or 3000
 
 // Middleware to parse JSON payloads
 app.use(express.json());
@@ -52,12 +52,14 @@ app.get('/', (_req: Request, res: Response): void => {
 // Function to start the server safely
 const server = http.createServer(app);
 
-server.on('error', (err: any) => {
+server.on('error', (err: NodeJS.ErrnoException) => {
   if (err.code === 'EADDRINUSE') {
     console.error(`⚠️ Port ${port} is already in use. Trying another port...`);
     server.listen(0, () => {
-      const newPort = (server.address() as any).port;
-      console.log(`✅ Server started on new available port: ${newPort}`);
+      const serverAddress = server.address();
+      if (serverAddress && typeof serverAddress === 'object') {
+        console.log(`✅ Server started on new available port: ${serverAddress.port}`);
+      }
     });
   } else {
     console.error('❌ Server failed to start:', err);
