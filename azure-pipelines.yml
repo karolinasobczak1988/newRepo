@@ -21,7 +21,8 @@ stages:
     steps:
     - script: |
         echo "Cleaning up disk space..."
-        rm -rf node_modules package-lock.json
+        if exist node_modules rmdir /s /q node_modules
+        if exist package-lock.json del package-lock.json
         npm cache clean --force
 
         echo "Installing npm dependencies..."
@@ -63,8 +64,8 @@ stages:
     steps:
     - script: |
         echo "Cleaning up unnecessary files before deployment..."
-        rm -rf D:\home\LogFiles
-        rm -rf D:\home\temp
+        if exist D:\home\LogFiles rmdir /s /q D:\home\LogFiles
+        if exist D:\home\temp rmdir /s /q D:\home\temp
       displayName: 'Free up disk space on Azure Web App'
 
     - task: DownloadBuildArtifacts@0
