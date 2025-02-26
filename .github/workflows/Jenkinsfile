@@ -14,7 +14,7 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                sh 'node -e "require(\'events\').EventEmitter.defaultMaxListeners = 50;"'
+                sh 'export NODE_OPTIONS="--max-old-space-size=4096 --trace-warnings"; node -e "require(\'events\').EventEmitter.defaultMaxListeners = 100;"'
                 sh 'npm install --legacy-peer-deps'
             }
         }
