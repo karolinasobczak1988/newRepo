@@ -42,7 +42,7 @@ app.get('/', (_req: Request, res: Response): void => {
         </style>
       </head>
       <body>
-        <h1>Hello World</h1>
+        <h1>Niedziela dzien cwela</h1>
       </body>
     </html>
   `);
