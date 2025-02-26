@@ -14,7 +14,8 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                sh 'npm install --legacy-peer-deps'  // Install npm dependencies
+                sh 'node -e "require(\'events\').EventEmitter.defaultMaxListeners = 20;"'
+                sh 'npm install --legacy-peer-deps'
             }
         }
         stage('Run Playwright Tests') {
