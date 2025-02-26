@@ -33,7 +33,7 @@ app.get('/', (_req: Request, res: Response): void => {
         <style>
           body {
             background-color: magenta;
-            color: yellow;
+            color: orange;
             font-family: Arial, sans-serif;
             text-align: center;
             margin-top: 20%;
@@ -42,7 +42,7 @@ app.get('/', (_req: Request, res: Response): void => {
         </style>
       </head>
       <body>
-        <h1>Hello World :) </h1>
+        <h1>Hello World</h1>
       </body>
     </html>
   `);

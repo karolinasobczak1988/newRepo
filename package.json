@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "preinstall": "npx npm-force-resolutions",
+    "preinstall": "node -e \"require('events').EventEmitter.defaultMaxListeners = 100;\"",
     "build": "tsc",
     "start": "node src/compile/indexAzure.js",
     "e2e": "npx playwright test login.spec.ts",
