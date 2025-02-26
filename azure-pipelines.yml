@@ -81,7 +81,7 @@ stages:
         - task: AzureCLI@2
           inputs:
             azureSubscription: 'NewServiceConnection'
-            scriptType: 'pscore'  # ✅ Use PowerShell Core (or use 'ps' for regular PowerShell)
+            scriptType: 'ps'  # ✅ Uses classic Windows PowerShell instead of pwsh
             scriptLocation: 'inlineScript'
             inlineScript: |
               az webapp config set --resource-group MyResourceGroup --name NewAmazingWebApp --startup-file "node src/compile/indexAzure.js"
