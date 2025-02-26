@@ -31,7 +31,7 @@ app.get('/', (_req, res) => {
         <style>
           body {
             background-color: magenta;
-            color: yellow;
+            color: green;
             font-family: Arial, sans-serif;
             text-align: center;
             margin-top: 20%;
@@ -40,7 +40,7 @@ app.get('/', (_req, res) => {
         </style>
       </head>
       <body>
-        <h1>Hello World</h1>
+        <h1>Niedziela dzien cwela</h1>
       </body>
     </html>
   `);
