@@ -31,7 +31,7 @@ app.get('/', (_req, res) => {
         <style>
           body {
             background-color: magenta;
-            color: green;
+            color: yellow;
             font-family: Arial, sans-serif;
             text-align: center;
             margin-top: 20%;
