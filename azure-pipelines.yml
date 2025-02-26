@@ -1,4 +1,4 @@
-trigger:
+trigger: 
   branches:
     include:
       - main  # Runs when you push to the main branch
@@ -42,7 +42,7 @@ stages:
 
             echo Compiling TypeScript...
             npx tsc --version
-            npx tsc
+            npx tsc src/tests/indexAzure.ts --outDir src/compile
           displayName: 'Build TypeScript App'
 
         - task: ArchiveFiles@2
@@ -56,7 +56,7 @@ stages:
         - task: PublishBuildArtifacts@1
           inputs:
             pathToPublish: '$(Build.ArtifactStagingDirectory)/drop/app.zip'
-            artifactName: 'drop'
+            artifactName: 'drop'  # ✅ This name must match DownloadBuildArtifacts!
           displayName: 'Publish Artifact'
 
 - stage: Deploy
@@ -64,22 +64,25 @@ stages:
   jobs:
     - job: DeployApp
       steps:
-        - script: |
-            echo Cleaning up unnecessary files before deployment...
-            if exist D:\home\LogFiles rmdir /s /q D:\home\LogFiles
-            if exist D:\home\temp rmdir /s /q D:\home\temp
-          displayName: 'Free up disk space on Azure Web App'
-
         - task: DownloadBuildArtifacts@0
           inputs:
-            artifactName: 'drop'
-            downloadPath: '$(Build.ArtifactStagingDirectory)'
+            buildType: 'current'  # ✅ Automatically downloads artifacts from the same pipeline
+            artifactName: 'drop'  # ✅ Must match artifact name from PublishBuildArtifacts
+            downloadPath: '$(Build.ArtifactStagingDirectory)'  # ✅ Correct property name
 
         - task: AzureWebApp@1
           inputs:
-            azureSubscription: 'Azure-Deploy-Connection'  # Ensure this matches your Service Connection name
-            appType: 'webApp'  # Required field for deployment
+            azureSubscription: 'NewServiceConnection'  # Ensure this matches your Service Connection name
+            appType: 'webApp'
             appName: 'NewAmazingWebApp'  # Replace with your actual Azure App Service name
             package: '$(Build.ArtifactStagingDirectory)/drop/app.zip'
-            runtimeStack: 'NODE:18-lts'
           displayName: 'Deploy to Azure Web App'
+
+        - task: AzureCLI@2
+          inputs:
+            azureSubscription: 'NewServiceConnection'
+            scriptType: 'ps'  # ✅ Uses classic Windows PowerShell instead of pwsh
+            scriptLocation: 'inlineScript'
+            inlineScript: |
+              az webapp config set --resource-group MyResourceGroup --name NewAmazingWebApp --startup-file "node src/compile/indexAzure.js"
+          displayName: 'Set Azure Web App Start Command'
