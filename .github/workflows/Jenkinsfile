@@ -18,16 +18,16 @@ pipeline {
                 sh 'npm install --legacy-peer-deps'
             }
         }
-        stage('Compile TypeScript') {  // ✅ Add this step
+        stage('Compile TypeScript') {  // ✅ Ensure TypeScript compiles first
             steps {
-                sh 'npx tsc'  // Compile TypeScript files
+                sh 'npx tsc --project tsconfig.json'
             }
         }
         stage('Run Playwright Tests') {
             steps {
                 script {
                     sh 'npx playwright install'  // Ensure Playwright is installed
-                    sh 'npx playwright test'  // Run Playwright tests
+                    sh 'npx playwright test src/compile'  // ✅ Ensure Playwright runs the compiled JavaScript
                 }
             }
         }
