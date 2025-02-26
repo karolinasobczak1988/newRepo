@@ -27,7 +27,7 @@ pipeline {
             steps {
                 script {
                     sh 'npx playwright install'  // Ensure Playwright is installed
-                    sh 'npx playwright test src/compile'  // ✅ Ensure Playwright runs the compiled JavaScript
+                    sh 'npx playwright test src/compile/tests'  // ✅ Run compiled tests
                 }
             }
         }
