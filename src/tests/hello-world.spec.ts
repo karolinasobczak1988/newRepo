@@ -9,5 +9,5 @@ test('should visit the page and check title', async ({ page }) => {
     const textContent = await textElement.textContent();
 
     // Compare the extracted text with the expected value
-    expect(textContent).toBe('Hello World');
+    expect(textContent).toBe('Niedziela dzien cwela');
 });
