@@ -1,17 +1,30 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "module": "CommonJS",
-    "outDir": "./src/compile",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noUnusedParameters": false, // Disable unused parameters warning
-    "noUnusedLocals": false // Disable unused locals warning
+    "target": "ESNext", // Modern JS features, async/await support
+    "module": "CommonJS", // Required for Playwright & Node.js
+    "outDir": "./src/compile", // Keep compiled files inside src/compile
+    "rootDir": "./src", // Ensures correct file structure during compilation
+
+    // TypeScript strictness & compatibility
+    "strict": true, // Ensures best TypeScript practices
+    "esModuleInterop": true, // Required for Playwright
+    "allowSyntheticDefaultImports": true, // Avoids import issues
+    "moduleResolution": "Node", // Helps resolve Playwright modules
+    "skipLibCheck": true, // Speeds up compilation by skipping type checks for libraries
+
+    // Suppress unnecessary warnings
+    "noUnusedParameters": false,
+    "noUnusedLocals": false,
+
+    // Ensure type safety
+    "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts" // Ensure only TypeScript files inside src/ are compiled
+  ],
+  "exclude": [
+    "node_modules", // Excludes dependencies
+    "src/compile", // Prevents re-compiling already compiled files
+    "tests/recordings" // Exclude unnecessary files if applicable
   ]
 }
