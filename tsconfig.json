@@ -2,17 +2,21 @@
   "compilerOptions": {
     "target": "ES6",
     "module": "CommonJS",
-    "outDir": "./src/compile",  // ✅ Ensure compiled files go here
-    "rootDir": "./src",         // ✅ Ensure TypeScript reads from src/
+    "outDir": "./src/compile",  // ✅ Ensures compiled files go here
+    "rootDir": "./src",         // ✅ Ensures TypeScript reads from src/
+    "allowJs": true,
+    "strict": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noUnusedParameters": false,
-    "noUnusedLocals": false
+    "noEmitOnError": false // ✅ Ensure TS generates JS files even if there are errors
   },
   "include": [
-    "src/**/*.ts"
+    "./src/**/*.ts"  // ✅ Fix the path
+  ],
+  "exclude": [
+    "node_modules",
+    "./src/compile"   // ✅ Exclude compiled files
   ]
 }
