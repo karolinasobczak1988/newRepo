@@ -1,7 +1,7 @@
 pipeline { 
     agent any
     environment {
-        GIT_CREDENTIALS = credentials('ssh-ed25519')  // Using SSH credentials for Git
+        GIT_CREDENTIALS = credentials('ssh-ed25519')
     }
     stages {
         stage('Checkout') {
@@ -14,19 +14,19 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'  // Install all dependencies
+                sh 'npm install'
             }
         }
         stage('Compile TypeScript') {
             steps {
-                sh 'npx tsc' // Compile TypeScript → JavaScript in "src/compile"
+                sh 'npx tsc' // Compile TypeScript
             }
         }
         stage('Run Playwright Tests') {
             steps {
                 script {
-                    sh 'npx playwright install'  // Ensure Playwright dependencies are installed
-                    sh 'npx playwright test src/compile/' // Run tests from compiled JS
+                    sh 'npx playwright install'
+                    sh 'npx playwright test src/compile/'
                 }
             }
         }

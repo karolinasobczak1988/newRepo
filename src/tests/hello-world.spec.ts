@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('should visit the page and check title', async ({ page }) => {
+test('should visit the page and check title', async ({ page }) => { // ✅ Correct destructuring
     await page.goto('http://localhost:3000/'); // Your Express app URL
     await page.waitForLoadState('load'); // Wait for the page to load
     const textElement = await page.locator('text=Hello World'); // Find the element containing "Hello World"

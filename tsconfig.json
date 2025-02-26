@@ -1,16 +1,19 @@
 {
   "compilerOptions": {
-    "target": "ESNext", // Modern JS features, async/await support
+    "target": "ESNext", // Supports modern async/await
     "module": "CommonJS", // Required for Playwright & Node.js
     "outDir": "./src/compile", // Keep compiled files inside src/compile
     "rootDir": "./src", // Ensures correct file structure during compilation
 
-    // TypeScript strictness & compatibility
-    "strict": true, // Ensures best TypeScript practices
-    "esModuleInterop": true, // Required for Playwright
-    "allowSyntheticDefaultImports": true, // Avoids import issues
+    // Ensure async/await works correctly
+    "lib": ["ESNext", "DOM"],
+
+    // TypeScript compatibility
+    "strict": true,
     "moduleResolution": "Node", // Helps resolve Playwright modules
-    "skipLibCheck": true, // Speeds up compilation by skipping type checks for libraries
+    "esModuleInterop": true, // Prevents interop issues with CommonJS
+    "allowSyntheticDefaultImports": true, // Avoids import issues
+    "skipLibCheck": true, // Speeds up compilation
 
     // Suppress unnecessary warnings
     "noUnusedParameters": false,
@@ -20,11 +23,11 @@
     "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "src/**/*.ts" // Ensure only TypeScript files inside src/ are compiled
+    "src/**/*.ts"
   ],
   "exclude": [
-    "node_modules", // Excludes dependencies
+    "node_modules",
     "src/compile", // Prevents re-compiling already compiled files
-    "tests/recordings" // Exclude unnecessary files if applicable
+    "tests/recordings"
   ]
 }
