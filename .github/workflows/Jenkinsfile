@@ -14,7 +14,7 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'  // Install npm dependencies
+                sh 'npm install --legacy-peer-deps'  // Install npm dependencies
             }
         }
         stage('Run Playwright Tests') {
