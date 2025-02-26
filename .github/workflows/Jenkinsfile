@@ -8,28 +8,25 @@ pipeline {
             steps {
                 git(
                     url: 'git@github.com:karolinasobczak1988/newRepo.git',
-                    credentialsId: 'ssh-ed25519'  // SSH credentials for GitHub
+                    credentialsId: 'ssh-ed25519'
                 )
             }
         }
         stage('Install Dependencies') {
             steps {
-                sh 'export NODE_OPTIONS="--max-old-space-size=4096 --trace-warnings"; node -e "require(\'events\').EventEmitter.defaultMaxListeners = 100;"'
-                sh 'npm install --legacy-peer-deps'
+                sh 'npm install'  // Install all dependencies
+            }
+        }
+        stage('Compile TypeScript') {
+            steps {
+                sh 'npx tsc' // Compile TypeScript → JavaScript in "src/compile"
             }
         }
         stage('Run Playwright Tests') {
             steps {
                 script {
-                    // List files in the workspace to verify test file exists (optional, for debugging)
-                    // sh 'dir /s /b'
-
-                    // Run Playwright tests
-                    sh 'npx playwright install'  // Ensure Playwright is installed
-                    sh 'npx playwright test'  // Run all Playwright tests (can specify individual files here)
-
-                    // Example: Uncomment and use this if you want to run a specific test
-                    // sh "npx playwright test src/tests/hello-world.spec.ts"
+                    sh 'npx playwright install'  // Ensure Playwright dependencies are installed
+                    sh 'npx playwright test src/compile/' // Run tests from compiled JS
                 }
             }
         }
