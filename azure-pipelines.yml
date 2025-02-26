@@ -1,4 +1,4 @@
-trigger:
+trigger: 
   branches:
     include:
       - main  # Runs when you push to the main branch
@@ -68,11 +68,11 @@ stages:
           inputs:
             buildType: 'current'  # ✅ Automatically downloads artifacts from the same pipeline
             artifactName: 'drop'  # ✅ Must match artifact name from PublishBuildArtifacts
-            targetPath: '$(Build.ArtifactStagingDirectory)'  # ✅ Correct parameter
+            downloadPath: '$(Build.ArtifactStagingDirectory)'  # ✅ Correct property name
 
         - task: AzureWebApp@1
           inputs:
-            azureSubscription: 'Azure-Deploy-Connection'  # Ensure this matches your Service Connection name
+            azureSubscription: 'NewServiceConnection'  # Ensure this matches your Service Connection name
             appType: 'webApp'
             appName: 'NewAmazingWebApp'  # Replace with your actual Azure App Service name
             package: '$(Build.ArtifactStagingDirectory)/drop/app.zip'
@@ -80,7 +80,7 @@ stages:
 
         - task: AzureCLI@2
           inputs:
-            azureSubscription: 'Azure-Deploy-Connection'
+            azureSubscription: 'NewServiceConnection'
             scriptType: 'bash'
             scriptLocation: 'inlineScript'
             inlineScript: |
