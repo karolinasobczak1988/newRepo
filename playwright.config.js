@@ -1,28 +1,27 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './tests',
+  testDir: './src/compile', // Directory for test files
   retries: 1,
   workers: 3,
   timeout: 30 * 1000,
   expect: {
     timeout: 5000,
   },
-  use: {
-    video: 'on', // 'on', 'retain-on-failure', or 'off'
-    headless: false, // Runs in headed mode
-  },
 
-
+  // ✅ REPORT CONFIGURATION: Playwright will generate HTML + JUnit reports
+  reporter: [
+    ['html', { outputFolder: 'playwright-report', open: 'never' }], // HTML report for manual review
+    ['junit', { outputFile: 'playwright-report/results.xml' }], // JUnit XML for Jenkins
+  ],
 
   projects: [
     {
       name: 'safari',
       use: {
         browserName: 'webkit',
-        headless: false,
-        screenshot: 'on',
-        video: 'retain-on-failure',
+        headless: true,
+        screenshot: 'off',
         trace: 'on',
         ...devices['iPhone 11'],
       },

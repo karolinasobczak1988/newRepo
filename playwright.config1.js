@@ -1,14 +1,19 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './tests',
-  //'./src/tests',
+  testDir: './src/compile', // Directory for test files
   retries: 1,
   workers: 3,
   timeout: 30 * 1000,
   expect: {
     timeout: 5000,
   },
+
+  // ✅ REPORT CONFIGURATION: Playwright will generate HTML + JUnit reports
+  reporter: [
+    ['html', { outputFolder: 'playwright-report', open: 'never' }], // HTML report for manual review
+    ['junit', { outputFile: 'playwright-report/results.xml' }], // JUnit XML for Jenkins
+  ],
 
   projects: [
     {
