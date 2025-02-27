@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+    environment {
+        GIT_CREDENTIALS = credentials('ssh-ed25519')  // Using SSH credentials for Git
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git(
+                    url: 'git@github.com:karolinasobczak1988/newRepo.git',
+                    credentialsId: 'ssh-ed25519'  // SSH credentials for GitHub
+                )
+            }
+        }
+        stage('Install Dependencies') {
+            steps {
+                sh 'node -e "require(\'events\').EventEmitter.defaultMaxListeners = 50;"'
+                sh 'npm install --legacy-peer-deps'
+            }
+        }
+        stage('Compile TypeScript') {  // ✅ Ensure TypeScript compiles first
+            steps {
+                sh 'npx tsc --project tsconfig.json'
+            }
+        }
+        stage('Run Playwright Tests') {
+            steps {
+                script {
+                    sh 'npx playwright install'  // Ensure Playwright is installed
+                    sh 'npx playwright test src/compile/tests'  // ✅ Run compiled tests
+                }
+            }
+        }
+    }
+}

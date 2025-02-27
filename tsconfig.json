@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "CommonJS",
+    "outDir": "./src/compile",  
+    "rootDir": "./src",         
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedParameters": false,
+    "noUnusedLocals": false
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/tests/**/*.ts"  // ✅ Ensures test files are compiled
+  ],
+  "exclude": [
+    "node_modules",
+    "src/compile"  
+  ]
+}
