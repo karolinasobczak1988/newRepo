@@ -13,9 +13,9 @@ const test_1 = require("@playwright/test");
 (0, test_1.test)('should visit the page and check title', ({ page }) => __awaiter(void 0, void 0, void 0, function* () {
     yield page.goto('http://localhost:3000/'); // Your Express app URL
     yield page.waitForLoadState('load'); // Wait for the page to load
-    const textElement = yield page.locator('text=Hello World'); // Find the element containing "Hello World"
+    const textElement = yield page.locator('text=Niedziela dzien cwela'); // Find the element containing "Hello World"
     // Extract the text content of the element
     const textContent = yield textElement.textContent();
     // Compare the extracted text with the expected value
-    (0, test_1.expect)(textContent).toBe('Hello World');
+    (0, test_1.expect)(textContent).toBe('Niedziela dzien cwela');
 }));
