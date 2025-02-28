@@ -3,45 +3,61 @@ name: Playwright Tests
 on:
   push:
     branches:
-      - main  # This triggers the workflow whenever there is a push to the 'main' branch
+      - main  # Triggers the workflow on push to 'main'
 
 jobs:
   test:
-    runs-on: ubuntu-latest  # This specifies that the tests will run on the latest Ubuntu runner
+    runs-on: ubuntu-latest  # Runs on the latest Ubuntu environment
 
     steps:
       # Step 1: Checkout the repository
       - name: Checkout repository
-        uses: actions/checkout@v2  # This checks out the code so the workflow can access it
+        uses: actions/checkout@v2
 
       # Step 2: Install dependencies (e.g., Playwright and other dependencies)
       - name: Install dependencies
-        run: npm install  # This installs all dependencies listed in your package.json file
+        run: npm install
 
-      # ✅ Step 3: Compile TypeScript to JavaScript
+      # ✅ Step 3: Clean Previous Build (Ensure no old compiled files remain)
+      - name: Clean Previous Build
+        run: rm -rf src/compile
+
+      # ✅ Step 4: Compile TypeScript to JavaScript
       - name: Compile TypeScript
-        run: npx tsc --project tsconfig.json  # Compile TS files to JS
+        run: |
+          echo "Compiling TypeScript..."
+          npx tsc --project "$(pwd)/tsconfig.json"
+          echo "Compilation complete."
 
-      # ✅ Step 4: Start Express server (Wait for the server before running tests)
+      # ✅ Step 5: Verify Compilation Output (Ensure index.js exists)
+      - name: Debug Compiled Files
+        run: |
+          echo "Checking compiled files in src/compile/"
+          ls -R src/compile/ || echo "⚠️ WARNING: src/compile directory is missing!"
+
+      # ✅ Step 6: Start Express Server Using an Absolute Path
       - name: Start Express server
         run: |
-          if [ -f src/compile/index.js ]; then  # Make sure the compiled file exists
-            node src/compile/index.js &  # Start the Express server in the background
-            npx wait-on http://localhost:3000  # Wait until the server is accessible
+          INDEX_PATH="$(pwd)/src/compile/index.js"
+          echo "Checking if compiled file exists at: $INDEX_PATH"
+          if [ -f "$INDEX_PATH" ]; then
+            echo "✅ index.js found! Starting Express server..."
+            node "$INDEX_PATH" &
+            npx wait-on http://localhost:3000
           else
-            echo "Compiled index.js not found! Exiting..."
+            echo "❌ ERROR: Compiled index.js not found at $INDEX_PATH! Exiting..."
             exit 1
           fi
 
-      # Step 5: Run Playwright tests
+      # Step 7: Run Playwright Tests
       - name: Run Playwright Tests
         run: |
-          npx playwright install  # Installs the necessary browser binaries for Playwright
-          npx playwright test hello-world.spec.ts  # Runs the specific Playwright test
+          npx playwright install  # Installs necessary browser binaries
+          npx playwright test hello-world.spec.ts  # Runs Playwright test
 
-      # Step 6: Upload test results as an artifact
+      # Step 8: Upload test results as an artifact
       - name: Upload test results
-        uses: actions/upload-artifact@v4  # Uploads the test results to GitHub for later inspection
+        uses: actions/upload-artifact@v4
         with:
-          name: test-results  # The name of the artifact
-          path: test-results/  # The path to the test results folder
+          name: test-results
+          path: test-results/
