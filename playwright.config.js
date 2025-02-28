@@ -6,7 +6,7 @@ export default defineConfig({
   workers: 3,
   timeout: 30 * 1000,
   expect: {
-    timeout: 5000,
+  timeout: 5000,
   },
 
   // ✅ REPORT CONFIGURATION: Playwright will generate HTML + JUnit reports
