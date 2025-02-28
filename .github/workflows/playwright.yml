@@ -29,31 +29,22 @@ jobs:
           npx tsc --project "$(pwd)/tsconfig.json"
           echo "✅ Compilation complete."
 
-      # ✅ Step 5: Verify Compilation Output (Ensure index.js exists)
+      # ✅ Step 5: Verify Compilation Output (Ensure test file exists)
       - name: Debug Compiled Files
         run: |
-          echo "🔍 Checking compiled files in src/compile/"
-          ls -R "$(pwd)/src/compile/" || echo "⚠️ WARNING: src/compile directory is missing!"
+          echo "🔍 Checking compiled files in src/compile/tests/"
+          ls -R "$(pwd)/src/compile/tests/" || echo "⚠️ WARNING: src/compile/tests/ directory is missing!"
 
-      # ✅ Step 6: Start Express Server Using an Absolute Path
-      - name: Start Express server
+      # ✅ Step 6: Install Playwright Browsers
+      - name: Install Playwright Browsers
         run: |
-          INDEX_PATH="$(pwd)/src/compile/tests/index.js"  # ✅ FIXED missing slash
-          echo "🔍 Checking if compiled file exists at: $INDEX_PATH"
-          if [ -f "$INDEX_PATH" ]; then
-            echo "✅ index.js found! Starting Express server..."
-            node "$INDEX_PATH" &
-            npx wait-on http://localhost:3000
-          else
-            echo "❌ ERROR: Compiled index.js not found at $INDEX_PATH! Exiting..."
-            exit 1
-          fi
+          npx playwright install --with-deps
 
-      # Step 7: Run Playwright Tests
+      # ✅ Step 7: Run Playwright Tests (Updated Path)
       - name: Run Playwright Tests
         run: |
-          npx playwright install  # Installs necessary browser binaries
-          npx playwright test hello-world.spec.ts  # Runs Playwright test
+          echo "🔍 Running Playwright tests from src/compile/tests/hello-world.spec.js"
+          npx playwright test src/compile/tests/hello-world.spec.js
 
       # Step 8: Upload test results as an artifact
       - name: Upload test results
