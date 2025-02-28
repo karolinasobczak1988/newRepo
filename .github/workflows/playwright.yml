@@ -25,21 +25,21 @@ jobs:
       # ✅ Step 4: Compile TypeScript to JavaScript
       - name: Compile TypeScript
         run: |
-          echo "Compiling TypeScript..."
+          echo "🚀 Compiling TypeScript..."
           npx tsc --project "$(pwd)/tsconfig.json"
-          echo "Compilation complete."
+          echo "✅ Compilation complete."
 
       # ✅ Step 5: Verify Compilation Output (Ensure index.js exists)
       - name: Debug Compiled Files
         run: |
-          echo "Checking compiled files in src/compile/tests"
-          ls -R src/compile/ || echo "⚠️ WARNING: src/compile/tests directory is missing!"
+          echo "🔍 Checking compiled files in src/compile/"
+          ls -R "$(pwd)/src/compile/" || echo "⚠️ WARNING: src/compile directory is missing!"
 
       # ✅ Step 6: Start Express Server Using an Absolute Path
       - name: Start Express server
         run: |
-          INDEX_PATH="$(pwd)src/compile/tests/index.js"
-          echo "Checking if compiled file exists at: $INDEX_PATH"
+          INDEX_PATH="$(pwd)/src/compile/tests/index.js"  # ✅ FIXED missing slash
+          echo "🔍 Checking if compiled file exists at: $INDEX_PATH"
           if [ -f "$INDEX_PATH" ]; then
             echo "✅ index.js found! Starting Express server..."
             node "$INDEX_PATH" &
