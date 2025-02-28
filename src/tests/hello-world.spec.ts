@@ -1,5 +1,7 @@
 import { test, expect } from '@playwright/test';
 
+test.use({ headless: true }); // ✅ Force headless mode for all tests
+
 test('should visit the page and check title', async ({ page }) => {
     await page.goto('http://localhost:3000/'); // Your Express app URL
     await page.waitForLoadState('load'); // Wait for the page to load
