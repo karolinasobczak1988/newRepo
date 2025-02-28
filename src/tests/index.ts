@@ -1,4 +1,5 @@
-import express, { Request, Response } from 'express';
+import { Request, Response } from 'express';
+const express = require('express');
 
 const app = express();
 const port = 3000;
@@ -33,7 +34,7 @@ app.get('/', (_req: Request, res: Response): void => {
         <style>
           body {
             background-color: magenta;
-            color: yellow;
+            color: red;
             font-family: Arial, sans-serif;
             text-align: center;
             margin-top: 20%;
