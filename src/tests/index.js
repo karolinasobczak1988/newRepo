@@ -22,7 +22,7 @@ app.post('/generic-webhook-trigger/invoke', function (req, res) {
 });
 // Main route for testing the server
 app.get('/', function (_req, res) {
-    res.send("\n    <html>\n      <head>\n        <style>\n          body {\n            background-color: magenta;\n            color: yellow;\n            font-family: Arial, sans-serif;\n            text-align: center;\n            margin-top: 20%;\n            font-size: 36px;\n          }\n        </style>\n      </head>\n      <body>\n        <h1>Niedziela dzien cwela</h1>\n      </body>\n    </html>\n  ");
+    res.send("\n    <html>\n      <head>\n        <style>\n          body {\n            background-color: magenta;\n            color: red;\n            font-family: Arial, sans-serif;\n            text-align: center;\n            margin-top: 20%;\n            font-size: 36px;\n          }\n        </style>\n      </head>\n      <body>\n        <h1>Niedziela dzien cwela</h1>\n      </body>\n    </html>\n  ");
 });
 // Start the server
 app.listen(port, function () {
