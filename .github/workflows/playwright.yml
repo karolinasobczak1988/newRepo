@@ -16,27 +16,30 @@ jobs:
 
       # Step 2: Install dependencies (e.g., Playwright and other dependencies)
       - name: Install dependencies
-        run: |
-          npm install  # This installs all dependencies listed in your package.json file
+        run: npm install  # This installs all dependencies listed in your package.json file
 
-      # Step 3: Start Express server (Check if index.js exists in the correct path)
+      # ✅ Step 3: Compile TypeScript to JavaScript
+      - name: Compile TypeScript
+        run: npx tsc --project tsconfig.json  # Compile TS files to JS
+
+      # ✅ Step 4: Start Express server (Wait for the server before running tests)
       - name: Start Express server
         run: |
-          if [ -f src/tests/index.js ]; then
-            node src/tests/index.js &  # Start the Express server in the background
+          if [ -f src/compile/index.js ]; then  # Make sure the compiled file exists
+            node src/compile/index.js &  # Start the Express server in the background
             npx wait-on http://localhost:3000  # Wait until the server is accessible
           else
-            echo "index.js not found! Exiting..."
+            echo "Compiled index.js not found! Exiting..."
             exit 1
           fi
 
-      # Step 4: Run Playwright tests
+      # Step 5: Run Playwright tests
       - name: Run Playwright Tests
         run: |
           npx playwright install  # Installs the necessary browser binaries for Playwright
           npx playwright test hello-world.spec.ts  # Runs the specific Playwright test
 
-      # Step 5: Upload test results as an artifact
+      # Step 6: Upload test results as an artifact
       - name: Upload test results
         uses: actions/upload-artifact@v4  # Uploads the test results to GitHub for later inspection
         with:
