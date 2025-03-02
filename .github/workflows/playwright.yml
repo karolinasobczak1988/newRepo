@@ -14,11 +14,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Step 2: Install dependencies (e.g., Playwright and other dependencies)
+      # Step 2: Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # ✅ Step 3: Clean Previous Build (Ensure no old compiled files remain)
+      # ✅ Step 3: Clean Previous Build
       - name: Clean Previous Build
         run: rm -rf src/compile
 
@@ -29,7 +29,7 @@ jobs:
           npx tsc --project "$(pwd)/tsconfig.json"
           echo "✅ Compilation complete."
 
-      # ✅ Step 5: Verify Compilation Output (Ensure test file exists)
+      # ✅ Step 5: Debug Compiled Files
       - name: Debug Compiled Files
         run: |
           echo "🔍 Checking compiled files in src/compile/tests/"
@@ -37,30 +37,33 @@ jobs:
 
       # ✅ Step 6: Install Playwright Browsers
       - name: Install Playwright Browsers
-        run: |
-          npx playwright install --with-deps
+        run: npx playwright install --with-deps
 
-      # ✅ Step 7: Start the server (Run Express or frontend server in the background)
+      # ✅ Step 7: Start Server and Wait Until It's Ready
       - name: Start Server
         run: |
           echo "🚀 Starting server..."
-          npm start &  # Run the server in the background
-          sleep 5  # Wait for the server to fully start
+          npm start &  # Run in the background
 
-      # ✅ Step 8: Run Playwright Tests (Headless Mode by Default)
+      - name: Wait for Server to be Ready
+        run: |
+          echo "⏳ Waiting for server at http://localhost:3000"
+          npx wait-on http://localhost:3000 --timeout 60000  # Wait up to 60 seconds
+
+      # ✅ Step 8: Run Playwright Tests (Headless Mode)
       - name: Run Playwright Tests (Headless Mode)
         run: |
           echo "🔍 Running Playwright tests in headless mode"
-          npx playwright test src/compile/tests/hello-world.spec.js --headed=false
+          npx playwright test src/compile/tests/hello-world.spec.js --headless
 
-      # ✅ Step 9: Run Playwright Tests Using Xvfb (For Headed Mode)
+      # ✅ Step 9: Run Playwright Tests Using Xvfb (If Needed)
       - name: Run Playwright Tests (Using Xvfb for Headed Mode)
         if: failure()  # Run only if the headless tests fail
         run: |
           echo "🔍 Running Playwright tests using Xvfb"
-          xvfb-run --auto-servernum npx playwright test src/compile/tests/hello-world.spec.js
+          xvfb-run --auto-servernum npx playwright test src/compile/tests/hello-world.spec.js --headed
 
-      # ✅ Step 10: Upload test results as an artifact
+      # ✅ Step 10: Upload test results
       - name: Upload test results
         uses: actions/upload-artifact@v4
         with:
