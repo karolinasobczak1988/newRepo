@@ -40,20 +40,27 @@ jobs:
         run: |
           npx playwright install --with-deps
 
-      # ✅ Step 7: Run Playwright Tests (Headless Mode by Default)
+      # ✅ Step 7: Start the server (Run Express or frontend server in the background)
+      - name: Start Server
+        run: |
+          echo "🚀 Starting server..."
+          npm start &  # Run the server in the background
+          sleep 5  # Wait for the server to fully start
+
+      # ✅ Step 8: Run Playwright Tests (Headless Mode by Default)
       - name: Run Playwright Tests (Headless Mode)
         run: |
           echo "🔍 Running Playwright tests in headless mode"
           npx playwright test src/compile/tests/hello-world.spec.js --headed=false
 
-      # ✅ Step 8: Run Playwright Tests Using Xvfb (For Headed Mode)
+      # ✅ Step 9: Run Playwright Tests Using Xvfb (For Headed Mode)
       - name: Run Playwright Tests (Using Xvfb for Headed Mode)
-        if: always()  # This step runs only if the headless test fails
+        if: failure()  # Run only if the headless tests fail
         run: |
           echo "🔍 Running Playwright tests using Xvfb"
           xvfb-run --auto-servernum npx playwright test src/compile/tests/hello-world.spec.js
 
-      # Step 9: Upload test results as an artifact
+      # ✅ Step 10: Upload test results as an artifact
       - name: Upload test results
         uses: actions/upload-artifact@v4
         with:
