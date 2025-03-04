@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "CommonJS",
+<<<<<<< HEAD
+    "outDir": "./src/compile",  
+    "rootDir": "./src",         
+=======
+    "outDir": "./compiledJenkins",  
+    "rootDir": ".",         
+>>>>>>> 397c962 (project1)
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedParameters": false,
+    "noUnusedLocals": false
+  },
+  "include": [
+<<<<<<< HEAD
+    "src/**/*.ts",
+    "src/tests/**/*.ts"  // ✅ Ensures test files are compiled
+  ],
+  "exclude": [
+    "node_modules",
+    "src/compile"  
+=======
+    "./index.ts"  // ✅ Compiles ONLY this file
+  ],
+  "exclude": [
+    "node_modules",
+    "compiledJenkins"
+>>>>>>> 397c962 (project1)
+  ]
+}
