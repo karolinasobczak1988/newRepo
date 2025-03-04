@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "CommonJS",
+    "outDir": "./compiledAzure",  
+    "rootDir": ".",         
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedParameters": false,
+    "noUnusedLocals": false
+  },
+  "include": [
+    "./indexAzure.ts"  // ✅ Compiles ONLY this file
+  ],
+  "exclude": [
+    "node_modules",
+    "compiledAzure"
+  ]
+}
