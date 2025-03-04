@@ -7,22 +7,31 @@ const jenkinsToken = "JenkinsToken"; // Set your actual Jenkins token
 // Middleware to parse JSON payloads
 app.use(express.json());
 
-// Webhook endpoint to handle GitHub push event
+// GitHub Webhook: Accepts requests at `/github-webhook`
 app.post("/github-webhook", (req, res) => {
-    console.log("Received webhook at /github-webhook");
+    console.log("✅ Received webhook at /github-webhook");
 
-    // Extract token from query params
     const token = req.query.token;
-
-    // Validate token (if required)
     if (jenkinsToken && token !== jenkinsToken) {
         console.error("❌ Invalid or missing token");
         return res.status(403).json({ error: "Forbidden: Invalid Token" });
     }
 
-    console.log("✅ Webhook payload received:", JSON.stringify(req.body, null, 2));
+    console.log("🔍 Webhook Payload:", JSON.stringify(req.body, null, 2));
+    res.status(200).json({ message: "Webhook received successfully" });
+});
 
-    // Send success response
+// **NEW: Accepts requests at `/generic-webhook-trigger/invoke`**
+app.post("/generic-webhook-trigger/invoke", (req, res) => {
+    console.log("✅ Received webhook at /generic-webhook-trigger/invoke");
+
+    const token = req.query.token;
+    if (jenkinsToken && token !== jenkinsToken) {
+        console.error("❌ Invalid or missing token");
+        return res.status(403).json({ error: "Forbidden: Invalid Token" });
+    }
+
+    console.log("🔍 Webhook Payload:", JSON.stringify(req.body, null, 2));
     res.status(200).json({ message: "Webhook received successfully" });
 });
 
