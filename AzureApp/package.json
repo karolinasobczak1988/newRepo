@@ -1,11 +1,11 @@
 {
   "name": "playwrightautomation",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "indexAzure.js",
   "scripts": {
     "preinstall": "node -e \"require('events').EventEmitter.defaultMaxListeners = 100;\"",
     "build": "tsc",
-    "start": "node src/compile/indexAzure.js",
+    "start": "node AzureApp/compiledAzure/indexAzure.js", 
     "e2e": "npx playwright test login.spec.ts",
     "test": "npm run e2e"
   },
@@ -35,7 +35,7 @@
     "jest-watch-typeahead/jest": "^28.1.3"
   },
   "directories": {
-    "test": "tests"
+    "test": "./AzureApp/testAzure"
   },
   "keywords": [],
   "author": "",
