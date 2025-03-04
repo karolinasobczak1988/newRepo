@@ -20,6 +20,7 @@ pipeline {
         }
         stage('Compile TypeScript') {  // ✅ Ensure TypeScript compiles first
             steps {
+                cd './PlayWrightAutomation/JenkinsApp'
                 sh 'npx tsc --project tsconfig.json'
             }
         }
@@ -27,7 +28,7 @@ pipeline {
             steps {
                 script {
                     sh 'npx playwright install'  // Ensure Playwright is installed
-                    sh 'npx playwright test src/compile'  // ✅ Run compiled tests
+                    sh 'npx playwright test JenkinsApp/testJenkins'  // ✅ Run compiled tests 
                 }
             }
         }
