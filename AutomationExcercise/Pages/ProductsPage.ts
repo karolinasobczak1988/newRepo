@@ -44,14 +44,14 @@ export class ProductsPage {
   
     // Step 2: Hover over the "Rs. 1200" price, which is within the same product card
    // const priceElement = productCard.locator('h2:has-text("Rs. 1200")');
-    await productCard.hover();
-  
+    await productCard.click();
     // Step 3: Wait for the overlay to appear after hovering
-    const overlay = productCard.locator('.product-overlay');
-    await overlay.waitFor({ state: 'visible', timeout: 10000 });
+    //const overlay = productCard.locator('.product-overlay');
+    //await overlay.waitFor({ state: 'visible', timeout: 10000 });
   
     // Step 4: Locate the "Add to Cart" button within the overlay
-    const addToCartButton = overlay.locator('.add-to-cart');
+    const addToCartButton = this.page.locator('div:nth-child(17) > .product-image-wrapper > .single-products > .product-overlay > .overlay-content > .btn')
+
     await addToCartButton.click();
   
    
