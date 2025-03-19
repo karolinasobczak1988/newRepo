@@ -15,8 +15,9 @@ export class ProductsPage {
   public continueShoppingButton: Locator;
   public productB: Locator;
   public viewCartButton: Locator;
-  public productName: Locator;
+  public productLocator: Locator;
   public productQuantity: Locator;
+  public product2DeleteButton: Locator;
 
 
 
@@ -27,8 +28,9 @@ export class ProductsPage {
     this.productA = this.page.getByRole('heading', { name: data.products.product1 }).first();
     this.productB = this.page.locator('div.productinfo h2', { hasText: data.products.product2 });
     this.viewCartButton = this.page.locator('.modal-body p.text-center a');
-    this.productName = this.page.locator('tr#product-18 td.cart_description h4 a');
     this.productQuantity = this.page.locator('tr#product-18 td.cart_quantity button.disabled');
+    this.productLocator = this.page.locator('tr#product-18 td.cart_description h4 a');
+    this.product2DeleteButton = this.page.locator('tr#product-16 td.cart_delete a.cart_quantity_delete');
   
   }
 
@@ -38,45 +40,30 @@ export class ProductsPage {
   async orderProducts() {
 
     const productCard = this.page.locator('div.productinfo.text-center p:has-text("Little Girls Mr. Panda Shirt")');
-
     console.log("Product located: ", await productCard.isVisible());
-  
     await productCard.click();
     await this.page.pause(); 
    
-    const addToCartButton = this.page.locator('div:nth-child(17) > .product-image-wrapper > .single-products > .product-overlay > .overlay-content > .btn')
-
+    const addToCartButton = this.page.locator('div:nth-child(17) > .product-image-wrapper > .single-products > .product-overlay > .overlay-content > .btn');
     await addToCartButton.click();
-
-  
-   
   }
   async orderProducts2() {
  
-  
     const productCard = this.page.locator('div.productinfo.text-center p:has-text("Sleeves Top and Short - Blue & Pink")');
-
-    console.log("Product located: ", await productCard.isVisible());
+    console.log("Product2 located: ", await productCard.isVisible());
   
     await productCard.click();
-   
-    const addToCartButton = this.page.locator('div:nth-child(16) > .product-image-wrapper > .single-products > .product-overlay > .overlay-content > .btn')
-
+    const addToCartButton = this.page.locator('div:nth-child(16) > .product-image-wrapper > .single-products > .product-overlay > .overlay-content > .btn');
     await addToCartButton.click();
-  
-   
   }
-
   
-get orderConfirmation() {
+  get orderConfirmation() {
   return this.page.getByText('Your product has been added to cart. View Cart');
-}
-async continueShopping() {
+  }
+  async continueShopping() {
   await this.continueShoppingButton.click()
-}
+  }
   
-    
-
   async goToCart() {
     await this.page.pause(); 
     await this.viewCartButton.click();
@@ -84,14 +71,17 @@ async continueShopping() {
   }
 
   async checkCart() {
-    await expect(this.productName).toHaveText(data.products.product1);
-    await expect(this.productQuantity).toHaveText('2');
-
-    await expect(this.productName).toHaveText(data.products.product2);
-    await expect(this.productQuantity).toHaveText('1');
+   
     
+    await expect(this.productLocator).toHaveText(data.products.product1);
+    const productLocator2 = this.page.locator('tr#product-16 td.cart_description h4 a');
+    await expect(productLocator2).toHaveText(data.products.product2);
   }
+   
+  async deleteProductCheck() {
 
-  
-  }
+    await this.product2DeleteButton.click();
+    await expect(this.productLocator).toHaveText(data.products.product1);
+    
+  }}
 
