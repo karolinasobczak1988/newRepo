@@ -17,7 +17,6 @@ test.describe('Login Tests', () => {
       });
 
 test('Login as a user positive path', async ({ page }) => {
-  const homePage = new HomePage(page);
   const loginPage = new LoginPage(page);
   
   //login as a user and confirm

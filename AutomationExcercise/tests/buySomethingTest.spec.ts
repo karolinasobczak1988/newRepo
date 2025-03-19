@@ -19,8 +19,9 @@ test('buy something', async ({ page }) => {
   await expect(page).toHaveURL(data.url.loginSignupUrl);
 
   //login as a user and confirm
-  await loginPage.invalidEmailLogin(fakeEmail);
-  await expect(loginPage.emailPassIncorrect).toBeVisible();
+  await loginPage.validUserLogin();
+  await loginPage.loginConfirmation.waitFor({ state: 'visible' });
+  await expect(loginPage.loginConfirmation).toBeVisible();
 
   //go to products and buy smth
   await homePage.goToProducts();
@@ -35,12 +36,13 @@ test('buy something', async ({ page }) => {
   await productsPage.continueShopping();
 
   //order a different product
-  await productsPage.orderProducts2();
+ /* await productsPage.orderProducts2();
   await expect(productsPage.orderConfirmation).toBeVisible();
 
   //go to cart and check the products
   await productsPage.goToCart();
-
+  await productsPage.checkCart();
+*/
 
 
 

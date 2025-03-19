@@ -15,6 +15,9 @@ export class ProductsPage {
   public continueShoppingButton: Locator;
   public productB: Locator;
   public viewCardButton: Locator;
+  public productName: Locator;
+  public productQuantity: Locator;
+
 
 
 
@@ -24,43 +27,68 @@ export class ProductsPage {
     this.productA = this.page.getByRole('heading', { name: data.products.product1 }).first();
     this.productB = this.page.locator('div.productinfo h2', { hasText: data.products.product2 });
     this.viewCardButton = this.page.getByRole('link', { name: 'View Cart' });
+    this.productName = this.page.locator('tr#product-18 td.cart_description h4 a');
+    this.productQuantity = this.page.locator('tr#product-18 td.cart_quantity button.disabled');
   
   }
 
+
+
+  
   async orderProducts() {
-
-   const productContainer = this.productA.locator('xpath=ancestor::div[contains(@class, "single-products")]');
-   await productContainer.hover();
-   const addToCartButton = productContainer.locator('.product-overlay .add-to-cart');
-   await expect(addToCartButton).toBeVisible({ timeout: 5000 });
-   await addToCartButton.click();
-
-  }
-
-  get orderConfirmation() {
-    return this.page.getByText('Your product has been added to cart. View Cart');
-  }
-
-  async continueShopping() {
-    await this.continueShoppingButton.click()
-  }
-
-  get emailPassIncorrect() {
+    // Step 1: Locate the product by its name "Little Girls Mr. Panda Shirt"
+    const productCard = this.page.locator('div.productinfo.text-center p:has-text("Little Girls Mr. Panda Shirt")');
   
-    return this.page.getByText('Your email or password is');
+    // Debug: Verify that the product was located
+    console.log("Product located: ", await productCard.isVisible());
+  
+    // Step 2: Hover over the "Rs. 1200" price, which is within the same product card
+   // const priceElement = productCard.locator('h2:has-text("Rs. 1200")');
+    await productCard.hover();
+  
+    // Step 3: Wait for the overlay to appear after hovering
+    const overlay = productCard.locator('.product-overlay');
+    await overlay.waitFor({ state: 'visible', timeout: 10000 });
+  
+    // Step 4: Locate the "Add to Cart" button within the overlay
+    const addToCartButton = overlay.locator('.add-to-cart');
+    await addToCartButton.click();
+  
+   
   }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
-  async orderProducts2() {
-   const productContainer = this.productB.locator('xpath=ancestor::div[contains(@class, "single-products")]');
-   await productContainer.hover();
-   const addToCartButton = productContainer.locator('.product-overlay .add-to-cart');
-   await expect(addToCartButton).toBeVisible({ timeout: 5000 });
-   await addToCartButton.click();
-
-  }
+  
+get orderConfirmation() {
+  return this.page.getByText('Your product has been added to cart. View Cart');
+}
+async continueShopping() {
+  await this.continueShoppingButton.click()
+}
+  
+    
 
   async goToCart() {
     await this.viewCardButton.click();
+  }
+
+  async checkCart() {
+    await expect(this.productName).toHaveText(data.products.product1);
+    await expect(this.productQuantity).toHaveText('2');
+
+    await expect(this.productName).toHaveText(data.products.product2);
+    await expect(this.productQuantity).toHaveText('1');
+
   }
 
   
