@@ -14,7 +14,7 @@ export class ProductsPage {
   public productA: Locator;
   public continueShoppingButton: Locator;
   public productB: Locator;
-  public viewCardButton: Locator;
+  public viewCartButton: Locator;
   public productName: Locator;
   public productQuantity: Locator;
 
@@ -26,7 +26,7 @@ export class ProductsPage {
     this.continueShoppingButton = this.page.getByRole('button', { name: 'Continue Shopping' });
     this.productA = this.page.getByRole('heading', { name: data.products.product1 }).first();
     this.productB = this.page.locator('div.productinfo h2', { hasText: data.products.product2 });
-    this.viewCardButton = this.page.getByRole('link', { name: 'View Cart' });
+    this.viewCartButton = this.page.locator('.modal-body p.text-center a');
     this.productName = this.page.locator('tr#product-18 td.cart_description h4 a');
     this.productQuantity = this.page.locator('tr#product-18 td.cart_quantity button.disabled');
   
@@ -36,37 +36,36 @@ export class ProductsPage {
 
   
   async orderProducts() {
-    // Step 1: Locate the product by its name "Little Girls Mr. Panda Shirt"
+
     const productCard = this.page.locator('div.productinfo.text-center p:has-text("Little Girls Mr. Panda Shirt")');
-  
-    // Debug: Verify that the product was located
+
     console.log("Product located: ", await productCard.isVisible());
   
-    // Step 2: Hover over the "Rs. 1200" price, which is within the same product card
-   // const priceElement = productCard.locator('h2:has-text("Rs. 1200")');
     await productCard.click();
-    // Step 3: Wait for the overlay to appear after hovering
-    //const overlay = productCard.locator('.product-overlay');
-    //await overlay.waitFor({ state: 'visible', timeout: 10000 });
-  
-    // Step 4: Locate the "Add to Cart" button within the overlay
+    await this.page.pause(); 
+   
     const addToCartButton = this.page.locator('div:nth-child(17) > .product-image-wrapper > .single-products > .product-overlay > .overlay-content > .btn')
+
+    await addToCartButton.click();
+
+  
+   
+  }
+  async orderProducts2() {
+ 
+  
+    const productCard = this.page.locator('div.productinfo.text-center p:has-text("Sleeves Top and Short - Blue & Pink")');
+
+    console.log("Product located: ", await productCard.isVisible());
+  
+    await productCard.click();
+   
+    const addToCartButton = this.page.locator('div:nth-child(16) > .product-image-wrapper > .single-products > .product-overlay > .overlay-content > .btn')
 
     await addToCartButton.click();
   
    
   }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 
   
 get orderConfirmation() {
@@ -79,7 +78,9 @@ async continueShopping() {
     
 
   async goToCart() {
-    await this.viewCardButton.click();
+    await this.page.pause(); 
+    await this.viewCartButton.click();
+  
   }
 
   async checkCart() {
@@ -88,7 +89,7 @@ async continueShopping() {
 
     await expect(this.productName).toHaveText(data.products.product2);
     await expect(this.productQuantity).toHaveText('1');
-
+    
   }
 
   

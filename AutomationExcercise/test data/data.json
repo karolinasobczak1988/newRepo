@@ -5,7 +5,8 @@
     "loginSignupUrl": "https://automationexercise.com/login",
     "signupUrl": "https://automationexercise.com/signup",
     "accountCreatedUrl": " https://automationexercise.com/account_created",
-    "productsUrl": "https://automationexercise.com/products"
+    "productsUrl": "https://automationexercise.com/products",
+    "viewCartUrl": "https://automationexercise.com/view_cart"
 },
 "dialog": {
     "message": "Consent"

@@ -35,22 +35,18 @@ test('buy something', async ({ page }) => {
   await expect(productsPage.orderConfirmation).toBeVisible();
   await productsPage.continueShopping();
 
-  //order a different product
- /* await productsPage.orderProducts2();
+
+ //order a different product
+  await productsPage.orderProducts2();
   await expect(productsPage.orderConfirmation).toBeVisible();
 
   //go to cart and check the products
+  
   await productsPage.goToCart();
-  await productsPage.checkCart();
-*/
+  await expect(page).toHaveURL(data.url.viewCartUrl);
+ // await productsPage.checkCart(); 
+  
+})
 
 
 
-
-
-
-  //
-  //await expect(page).toHaveURL(data.url.accountCreatedUrl);
- // await expect(accountPage.accountConfirmation).toBeVisible();
-
-});
