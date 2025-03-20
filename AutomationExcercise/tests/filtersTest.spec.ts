@@ -1,15 +1,12 @@
 import { test, expect } from '@playwright/test'; 
 import { LoginPage, HomePage, ProductsPage } from '../Pages';
 import data from '../test data/data.json'
-import { faker } from '@faker-js/faker';
 
 test('test filters', async ({ page }) => {
   const homePage = new HomePage(page);
   const loginPage = new LoginPage(page);
   const productsPage = new ProductsPage(page);
 
-
-  
   // navigate to Signup/Login 
   await homePage.navigate();
   await homePage.acceptCookies();
@@ -30,10 +27,6 @@ test('test filters', async ({ page }) => {
 
    //filter kookie kids category and assert results
    await productsPage.filterKookieKidsCategory();
-
-
-
- 
 
 })
 

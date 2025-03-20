@@ -92,5 +92,4 @@ export class ProductsPage {
       data.products.product6, data.products.product7, data.products.product8]);
     }
    
-  
 }

@@ -1,6 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
+  workers: 4, // Number of parallel workers (adjust this as needed)
   testDir: './src/compile', // Directory for test files
   retries: 1,
   workers: 3,
