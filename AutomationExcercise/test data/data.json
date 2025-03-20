@@ -6,7 +6,10 @@
     "signupUrl": "https://automationexercise.com/signup",
     "accountCreatedUrl": " https://automationexercise.com/account_created",
     "productsUrl": "https://automationexercise.com/products",
-    "viewCartUrl": "https://automationexercise.com/view_cart"
+    "viewCartUrl": "https://automationexercise.com/view_cart",
+    "checkoutUrl": "https://automationexercise.com/checkout",
+    "paymentUrl": "https://automationexercise.com/payment",
+    "paymentDoneUrl": "https://automationexercise.com/payment_done/"
 },
 "dialog": {
     "message": "Consent"
@@ -20,7 +23,13 @@
 "products": {
     "product1": "Little Girls Mr. Panda Shirt",
 
-    "product2": "Sleeves Top and Short - Blue & Pink"
+    "product2": "Sleeves Top and Short - Blue & Pink",
+    "product3": "Sleeveless Dress",
+    "product4": "Stylish Dress",
+    "product5": "Rose Pink Embroidered Maxi Dress",
+    "product6": "Full Sleeves Top Cherry - Pink",
+    "product7": "Little Girls Mr. Panda Shirt",
+    "product8": "Cotton Mull Embroidered Dress"
 }
 
 

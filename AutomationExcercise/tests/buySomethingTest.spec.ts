@@ -1,11 +1,15 @@
 import { test, expect } from '@playwright/test'; 
-import { LoginPage, HomePage, ProductsPage } from '../Pages';
+import { LoginPage, HomePage, ProductsPage, CheckoutPaymentPage } from '../Pages';
 import data from '../test data/data.json'
+import { faker } from '@faker-js/faker';
 
 test('buy something', async ({ page }) => {
   const homePage = new HomePage(page);
   const loginPage = new LoginPage(page);
   const productsPage = new ProductsPage(page);
+  const checkoutPaymentPage = new CheckoutPaymentPage(page);
+  const fakeName = faker.person.firstName();
+  const fakeCardNo = faker.string.alphanumeric(8); 
 
   
   // navigate to Signup/Login 
@@ -31,13 +35,26 @@ test('buy something', async ({ page }) => {
   await expect(productsPage.orderConfirmation).toBeVisible();
 
   //go to cart and check the products
-  await productsPage.goToCart();
+  await checkoutPaymentPage.goToCart();
   await expect(page).toHaveURL(data.url.viewCartUrl);
-  await productsPage.checkCart(); 
+  await checkoutPaymentPage.checkCart(); 
 
-  //remove one product and check again
-  await productsPage.deleteProductCheck();
-  
+  //remove one product
+  await checkoutPaymentPage.deleteProductCheck();
+
+  //go to checkout
+  await checkoutPaymentPage.goCheckout();
+  await expect(page).toHaveURL(data.url.checkoutUrl);
+
+  //go to payment
+  await checkoutPaymentPage.goPayment();
+  await expect(page).toHaveURL(data.url.paymentUrl);
+
+  //finish payment and confirm
+  await checkoutPaymentPage.paymentDetails(fakeName, fakeCardNo);
+  await expect(checkoutPaymentPage.confirmationMessage).toBeVisible();
+  await expect(page.url()).toContain(data.url.paymentDoneUrl);
+
 })
 
 
